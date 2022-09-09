@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cv',
+    'multiselectfield',
+    'mptt',
+    'django_extensions',
+
+
 ]
 
 MIDDLEWARE = [
