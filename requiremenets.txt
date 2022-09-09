@@ -1,5 +1,8 @@
 asgiref==3.5.2
 Django==4.1.1
+django-extensions==3.2.1
+django-js-asset==2.0.0
+django-mptt==0.13.4
 django-multiselectfield==0.1.12
 django-ninja==0.19.1
 pydantic==1.10.2
@@ -7,3 +10,4 @@ sqlparse==0.4.2
 typing==3.7.4.3
 typing_extensions==4.3.0
 tzdata==2022.2
+uuid==1.30
