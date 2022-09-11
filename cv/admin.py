@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from .models import CompanyUser, User, CompanyProfile, CustomerProfile, WorkExperience, Education, Job, JobApplication
+from .models import CompanyUser,UserProfile, CompanyProfile, CustomerProfile, WorkExperience, Education, Job, JobApplication
 
 
 @admin.register(CompanyUser)
@@ -11,7 +11,7 @@ class CompanyUserAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 
-@admin.register(User)
+@admin.register(UserProfile)
 class UserAdmin(admin.ModelAdmin):
     list_display = ('id', 'uuid', 'created', 'updated', 'parent', 'name')
     list_filter = ('created', 'updated', 'parent')
@@ -25,13 +25,13 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         'uuid',
         'created',
         'updated',
-        'company_user',
+        'Name',
         'description',
         'work_type',
         'city',
-        'address',
-    )
-    list_filter = ('created', 'updated', 'company_user')
+        'address', 'CompanyProfileImage')
+    
+    list_filter = ('created', 'updated')
 
 
 @admin.register(CustomerProfile)
@@ -41,14 +41,14 @@ class CustomerProfileAdmin(admin.ModelAdmin):
         'uuid',
         'created',
         'updated',
-        'user',
+        'Name',
         'description',
         'address',
         'skills',
         'language',
-        'job_title',
-    )
-    list_filter = ('created', 'updated', 'user')
+        'job_title', 'UserProfileImage', 'Cv')
+    
+    list_filter = ('created', 'updated')
 
 
 @admin.register(WorkExperience)
@@ -60,7 +60,7 @@ class WorkExperienceAdmin(admin.ModelAdmin):
         'updated',
         'customer',
         'title',
-        'company_worked_for',
+        'company_worked_for', 
     )
     list_filter = ('created', 'updated', 'customer')
 
@@ -74,7 +74,7 @@ class EducationAdmin(admin.ModelAdmin):
         'updated',
         'customer',
         'degree',
-        'school',
+        'school', 
     )
     list_filter = ('created', 'updated', 'customer')
 
@@ -87,7 +87,7 @@ class JobAdmin(admin.ModelAdmin):
         'created',
         'updated',
         'company',
-        'postion',
+        'position',
         'workplace',
         'location',
         'employment_type',
