@@ -6,7 +6,7 @@ from django.db import models
 from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser,BaseUserManager
 import datetime
 
 
@@ -47,6 +47,7 @@ class EmploymentType(models.TextChoices):
 class WorkplaceType(models.TextChoices):
     ON_SITE = 'ON SITE', 'on site'
     REMONTE = 'REMONTE', 'Remonte'
+    #hybird,
 
 
 class JobLocation(models.TextChoices):
@@ -60,17 +61,24 @@ Language = (('item_key1', 'Item title 1.1'),
               ('item_key4', 'Item title 1.4'),
               ('item_key5', 'Item title 1.5'))
 
+"""-------------------------------------------------------------------------------------------------------------------"""  
+class User(AbstractUser):
+    class Role(models.TextChoices):
+        COMPANY = 'COMPANY', 'Company'
+        CUSTOMER = 'CUSTOMER', 'Customer'
+        ADMIN = 'admin', 'Admin'
 
+    base_role = Role.ADMIN
+    role = models.CharField(max_length=50, choices=Role.choices, default=base_role)
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.role = self.base_role
+        super().save(*args, **kwargs) 
 
+"""-------------------------------------------------------------------------------------------------------------------"""  
 
-
-
-
-
-
-
-"""
-class CutomerManger(BaseUserManager):
+class CustomerManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
             raise ValueError('Users must have an email address')
@@ -82,30 +90,30 @@ class CutomerManger(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    def get_queryset(self):
-        return super().get_queryset().filter(role=User.Role.CUSTOMER)
-
-class Costumer(User):
-    objects = CutomerManger()
-    class Meta:
-        proxy = True
-        verbose_name = 'Customer'
-        verbose_name_plural = 'Customers'
+    def get_queryset(self, *args, **kwargs):
+        results = super().get_queryset(*args, **kwargs)
+        return results.filter(role=User.Role.STUDENT)
 
 
-class CustomerUser(User):
+class Customer(User):
+
     base_role = User.Role.CUSTOMER
+
+    Customer = CustomerManager()
+
     class Meta:
         proxy = True
 
-@receiver(post_save, sender=CustomerUser)
-def create_customer_profile(sender, instance, created, **kwargs):
-        if created and instance.role == User.Role.CUSTOMER:
-            CustomerUser.objects.create(user=instance)
-        CustomerUser.objects.create(user=instance)
-    
-    
+@receiver(post_save, sender=Customer)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created and instance.role == "CUSTOMER":
+        CustomerProfile.objects.create(user=instance)
+"""-------------------------------------------------------------------------------------------------------------------"""  
 
+
+
+
+"""*******************************************************************************************************************"""
 class CompanyManger(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
@@ -120,29 +128,30 @@ class CompanyManger(BaseUserManager):
         return user
     def get_queryset(self):
         return super().get_queryset().filter(role=User.Role.COMPANY)
-
-class CompanyUser(User):
-    base_role = User.Role.COMPANY
-    class Meta:
-        proxy = True     
-
-
-
-
-class User(AbstractUser):
-    class Role(models.TextChoices):
-        COMPANY = 'COMPANY', 'Company'
-        CUSTOMER = 'CUSTOMER', 'Customer'
-        ADMIN = 'admin', 'Admin'
-
-    base_role = Role.ADMIN
-    role = models.CharField(max_length=50, choices=Role.choices, default=base_role)
     
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.role = self.base_role
-        super().save(*args, **kwargs) 
-"""
+
+
+class Company(User):
+    base_role = User.Role.COMPANY
+    Company = CompanyManger()
+    class Meta:
+        proxy = True
+
+
+@receiver(post_save, sender=Company)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created and instance.role == "COMPANY":
+        CompanyProfile.objects.create(user=instance)
+    
+"""*******************************************************************************************************************"""
+
+
+
+
+    
+
+
+
 class Profile(models.Model):
 
     class Meta:
@@ -154,18 +163,15 @@ class Profile(models.Model):
     updated = models.DateTimeField(editable=False, auto_now=True)
 
 
-class CompanyUser(Profile):
-  
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
-    name = models.CharField(max_length=50, unique=True, null=False, blank=False)
-
 
 class UserProfile(Profile):
-    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL)
-    name = models.CharField(max_length=50, unique=True, null=False, blank=False)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='user_profile')
+    name = models.CharField(max_length=255)
+    
     
 
 class CompanyProfile(Profile):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     Name = models.CharField(max_length=50, unique=True, null=True, blank=True,default='Company Name')
     description = models.TextField(null=True, blank=True)
     work_type = models.CharField(choices=JobTitle.choices, max_length=20)
@@ -176,11 +182,12 @@ class CompanyProfile(Profile):
 
 
 class CustomerProfile(Profile):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     Name = models.CharField(max_length=50, unique=True, null=True, blank=True, default='Customer')
     description = models.TextField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
-    skills = MultiSelectField(choices=Skills, max_choices=3, max_length=255)
-    language = MultiSelectField(choices=Language, max_choices=4, max_length=255)
+    skills = MultiSelectField(choices=Skills, max_choices=10, max_length=255)
+    language = MultiSelectField(choices=Language, max_choices=10, max_length=255)
     job_title = models.CharField(choices=JobTitle.choices, max_length=30)
     UserProfileImage = models.ImageField(upload_to='customer_profile/', null=True, blank=True, default='default.jpg')
     Cv = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf')
