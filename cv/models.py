@@ -1,14 +1,16 @@
 from datetime import datetime
 from email.mime import image
+from genericpath import exists
 from unicodedata import name
 import uuid as uuid
 from django.db import models
 from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import AbstractUser,BaseUserManager
-import datetime
+from django.contrib.auth.models import AbstractBaseUser,BaseUserManager , PermissionsMixin
 
+import datetime
+from django.utils.translation import ugettext_lazy as _
 
 
 class Category(models.TextChoices):
@@ -62,14 +64,71 @@ Language = (('item_key1', 'Item title 1.1'),
               ('item_key5', 'Item title 1.5'))
 
 """-------------------------------------------------------------------------------------------------------------------"""  
-class User(AbstractUser):
+
+class UserManager(BaseUserManager):
+
+    def create_user(self, email, password=None):
+        """
+        Creates and saves a User with the given email and password.
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_staffuser(self, email, password):
+        """
+    Custom user model where the email address is the unique identifier
+    and has an is_admin field to allow access to the admin app 
+    """
+    def create_user(self, email, password, **extra_fields):
+        if not email:
+            raise ValueError(_("The email must be set"))
+        if not password:
+            raise ValueError(_("The password must be set"))
+        email = self.normalize_email(email)
+
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_active', True)
+        extra_fields.setdefault('role', 1)
+
+        if extra_fields.get('role') != 1:
+            raise ValueError('Superuser must have role of Global Admin')
+        return self.create_user(email, password, **extra_fields)
+
+
+
+
+
+class User(AbstractBaseUser,PermissionsMixin):
     class Role(models.TextChoices):
         COMPANY = 'COMPANY', 'Company'
         CUSTOMER = 'CUSTOMER', 'Customer'
         ADMIN = 'admin', 'Admin'
 
     base_role = Role.ADMIN
-    role = models.CharField(max_length=50, choices=Role.choices, default=base_role)
+    role = models.CharField(max_length=50, choices=Role.choices, default=base_role,editable=False)
+    name = models.CharField(max_length=50,blank=True,null=True,default='Name')
+    email = models.EmailField(max_length=50,unique=True,null=True,blank=True)
+    is_staff = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
+    USERNAME_FIELD = 'email'
+    objects = UserManager()
+
+    def __str__(self):
+        return self.name
     
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -92,22 +151,19 @@ class CustomerManager(BaseUserManager):
         return user
     def get_queryset(self, *args, **kwargs):
         results = super().get_queryset(*args, **kwargs)
-        return results.filter(role=User.Role.STUDENT)
+        return results.filter(role=User.Role.CUSTOMER)
+    
 
 
 class Customer(User):
+    phone = models.CharField(max_length=50,blank=True,null=True,default='Phone')
+    
 
     base_role = User.Role.CUSTOMER
 
     Customer = CustomerManager()
 
-    class Meta:
-        proxy = True
 
-@receiver(post_save, sender=Customer)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created and instance.role == "CUSTOMER":
-        CustomerProfile.objects.create(user=instance)
 """-------------------------------------------------------------------------------------------------------------------"""  
 
 
@@ -132,16 +188,16 @@ class CompanyManger(BaseUserManager):
 
 
 class Company(User):
+    phone = models.CharField(max_length=50,blank=True,null=True,default='Phone')
+    address=models.CharField(max_length=50,blank=True,null=True,default='Address')
+    
+
     base_role = User.Role.COMPANY
     Company = CompanyManger()
-    class Meta:
-        proxy = True
+    
 
 
-@receiver(post_save, sender=Company)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created and instance.role == "COMPANY":
-        CompanyProfile.objects.create(user=instance)
+
     
 """*******************************************************************************************************************"""
 
@@ -162,28 +218,41 @@ class Profile(models.Model):
     created = models.DateTimeField(editable=False, auto_now_add=True)
     updated = models.DateTimeField(editable=False, auto_now=True)
 
+    
 
 
-class UserProfile(Profile):
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name='user_profile')
-    name = models.CharField(max_length=255)
     
     
 
 class CompanyProfile(Profile):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    Name = models.CharField(max_length=50, unique=True, null=True, blank=True,default='Company Name')
+    user = models.OneToOneField(Company, on_delete=models.CASCADE, related_name='company_profile')
+    phone = models.CharField(max_length=50,blank=True,null=True,default='Phone')
+    email = models.EmailField(max_length=50,unique=True,null=True,blank=True)
+    password = models.CharField(max_length=50,blank=True,null=True,default='Password')
+    Name = models.CharField(max_length=50, null=True, blank=True,default='Company Name')
     description = models.TextField(null=True, blank=True)
     work_type = models.CharField(choices=JobTitle.choices, max_length=20)
     city = models.CharField(choices=JobLocation.choices, max_length=20)
     address = models.CharField(max_length=255, null=True, blank=True)
     CompanyProfileImage = models.ImageField(upload_to='company_profile/', null=True, blank=True, default='company_profile/default.png')
 
+@receiver(post_save, sender=Company)
+def create_user_profile(sender, instance, created, **kwargs):
+    try:
+        CompanyProfile.objects.get(user=instance)
+    except CompanyProfile.DoesNotExist:
+        if created and instance.role == "COMPANY":
+            CompanyProfile.objects.create(user=instance, Name=instance.name, email=instance.email, phone=instance.phone, password=instance.password)
+        else:
+            instance.company_profile.save()
+
+
 
 
 class CustomerProfile(Profile):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    Name = models.CharField(max_length=50, unique=True, null=True, blank=True, default='Customer')
+    user = models.OneToOneField(Customer, on_delete=models.CASCADE, related_name='customer_profile')
+    phone = models.CharField(null=True, blank=True,max_length=20)
+    Name = models.CharField(max_length=50,  null=True, blank=True, default='Customer')
     description = models.TextField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     skills = MultiSelectField(choices=Skills, max_choices=10, max_length=255)
@@ -191,7 +260,19 @@ class CustomerProfile(Profile):
     job_title = models.CharField(choices=JobTitle.choices, max_length=30)
     UserProfileImage = models.ImageField(upload_to='customer_profile/', null=True, blank=True, default='default.jpg')
     Cv = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf')
+  
+@receiver(post_save, sender=Customer)
+def create_user_profile(sender, instance, created, **kwargs):
+    try:
+        CustomerProfile.objects.get(user=instance)
+    except CustomerProfile.DoesNotExist:
+        if created and instance.role == "CUSTOMER":
+            CustomerProfile.objects.create(user=instance,phone=instance.phone,Name=instance.name,address=instance.address)
+        else:
+            if instance.role == "CUSTOMER":
+                instance.customer_profile.save()
     
+
 
 
 class WorkExperience(Profile):
