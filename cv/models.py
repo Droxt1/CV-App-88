@@ -10,7 +10,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager , PermissionsMixin
 
 import datetime
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class Category(models.TextChoices):
@@ -189,7 +189,8 @@ class CompanyManger(BaseUserManager):
 
 class Company(User):
     phone = models.CharField(max_length=50,blank=True,null=True,default='Phone')
-    address=models.CharField(max_length=50,blank=True,null=True,default='Address')
+    address = models.CharField(max_length=50,blank=True,null=True,default='Address')
+    country = models.CharField(max_length=50, null=True, blank=True, default='Iraq')
     
 
     base_role = User.Role.COMPANY
@@ -218,56 +219,60 @@ class Profile(models.Model):
     created = models.DateTimeField(editable=False, auto_now_add=True)
     updated = models.DateTimeField(editable=False, auto_now=True)
 
-    
-
-
-    
-    
 
 class CompanyProfile(Profile):
     user = models.OneToOneField(Company, on_delete=models.CASCADE, related_name='company_profile')
-    phone = models.CharField(max_length=50,blank=True,null=True,default='Phone')
+    phone = models.CharField(max_length=50, blank=True, null=True,default='Phone')
     email = models.EmailField(max_length=50,unique=True,null=True,blank=True)
     password = models.CharField(max_length=50,blank=True,null=True,default='Password')
-    Name = models.CharField(max_length=50, null=True, blank=True,default='Company Name')
+    name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     work_type = models.CharField(choices=JobTitle.choices, max_length=20)
+    country = models.CharField(max_length=50, null=True, blank=True, default='Iraq')
     city = models.CharField(choices=JobLocation.choices, max_length=20)
     address = models.CharField(max_length=255, null=True, blank=True)
-    CompanyProfileImage = models.ImageField(upload_to='company_profile/', null=True, blank=True, default='company_profile/default.png')
+    image = models.ImageField(upload_to='company_profile/', null=True, blank=True, default='company_profile/default.png')
 
 @receiver(post_save, sender=Company)
 def create_user_profile(sender, instance, created, **kwargs):
     try:
-        CompanyProfile.objects.get(user=instance)
+        CompanyProfile.objects.get(user=instance, name=instance.name, email=instance.email, country=instance.country, phone=instance.phone, password=instance.password)
     except CompanyProfile.DoesNotExist:
         if created and instance.role == "COMPANY":
-            CompanyProfile.objects.create(user=instance, Name=instance.name, email=instance.email, phone=instance.phone, password=instance.password)
+            CompanyProfile.objects.create(user=instance, name=instance.name, email=instance.email, country=instance.country, phone=instance.phone, password=instance.password)
         else:
             instance.company_profile.save()
 
 
+class Job(Profile):
+    company = models.ForeignKey(CompanyProfile, related_name='job', on_delete=models.CASCADE)
+    position = models.CharField(choices=JobTitle.choices, max_length=30)
+    workplace = models.CharField(choices=WorkplaceType.choices, max_length=30)
+    location = models.CharField(choices=JobLocation.choices,max_length=40)
+    employment_type = models.CharField(choices=EmploymentType.choices, max_length=30)
+    description = models.TextField(null=True, blank=True)
 
 
 class CustomerProfile(Profile):
     user = models.OneToOneField(Customer, on_delete=models.CASCADE, related_name='customer_profile')
-    phone = models.CharField(null=True, blank=True,max_length=20)
-    Name = models.CharField(max_length=50,  null=True, blank=True, default='Customer')
+    phone = models.CharField(null=True, blank=True,max_length=20, unique=True)
+    name = models.CharField(max_length=50,  null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     skills = MultiSelectField(choices=Skills, max_choices=10, max_length=255)
     language = MultiSelectField(choices=Language, max_choices=10, max_length=255)
     job_title = models.CharField(choices=JobTitle.choices, max_length=30)
-    UserProfileImage = models.ImageField(upload_to='customer_profile/', null=True, blank=True, default='default.jpg')
-    Cv = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf')
+    image = models.ImageField(upload_to='customer_profile/', null=True, blank=True, default='default.jpg')
+    cv = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf')
+    saved_job = models.ManyToManyField(Job, related_name='job', blank=True)
   
 @receiver(post_save, sender=Customer)
 def create_user_profile(sender, instance, created, **kwargs):
     try:
-        CustomerProfile.objects.get(user=instance)
+        CustomerProfile.objects.get(user=instance, phone=instance.phone,name=instance.name)
     except CustomerProfile.DoesNotExist:
         if created and instance.role == "CUSTOMER":
-            CustomerProfile.objects.create(user=instance,phone=instance.phone,Name=instance.name,address=instance.address)
+            CustomerProfile.objects.create(user=instance,phone=instance.phone,name=instance.name)
         else:
             if instance.role == "CUSTOMER":
                 instance.customer_profile.save()
@@ -291,20 +296,6 @@ class Education(Profile):
     start_date = models.DateField(null=True, blank=True, default=datetime.date.today)
     end_date = models.DateField(null=True, blank=True, default=None)
 
-
-
-class Job(Profile):
-    company = models.ForeignKey(CompanyProfile, related_name='job', on_delete=models.CASCADE)
-    position = models.CharField(choices=JobTitle.choices, max_length=30)
-    workplace = models.CharField(choices=WorkplaceType.choices, max_length=30)
-    location = models.CharField(choices=JobLocation.choices,max_length=40)
-    employment_type = models.CharField(choices=EmploymentType.choices, max_length=30)
-    description = models.TextField(null=True, blank=True)
-    saved_by = models.ForeignKey(CustomerProfile, related_name='job', null=True, blank=True, on_delete=models.SET_NULL)
-    JobImage = models.ImageField(upload_to='job/', null=True, blank=True, default='default.jpg', verbose_name='Job Image')
-    
-
-    
 
 
 class JobApplication(Profile):

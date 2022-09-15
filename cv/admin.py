@@ -52,11 +52,11 @@ class CompanyProfileAdmin(admin.ModelAdmin):
         'uuid',
         'created',
         'updated',
-        'Name',
+        'name',
         'description',
         'work_type',
         'city',
-        'address', 'CompanyProfileImage')
+        'address', 'image')
     
     list_filter = ('created', 'updated')
 
@@ -86,12 +86,12 @@ class CustomerProfileAdmin(admin.ModelAdmin):
         'uuid',
         'created',
         'updated',
-        'Name',
+        'name',
         'description',
         'address',
         'skills',
         'language',
-        'job_title',  'Cv')
+        'job_title',  'cv')
     
     list_filter = ('created', 'updated')
 
@@ -112,7 +112,7 @@ class JobAdmin(admin.ModelAdmin):
         'description',
     )
     list_filter = ('created', 'updated', 'company')
-    raw_id_fields = ('saved_by',)
+
 
 
 @admin.register(JobApplication)
