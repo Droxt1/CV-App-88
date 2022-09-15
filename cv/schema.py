@@ -3,12 +3,6 @@ from pydantic import UUID4
 from typing import List
 
 
-
-
-
-
-
-
 class CompanyOut(Schema):
     name: str = None
     description: str = None
