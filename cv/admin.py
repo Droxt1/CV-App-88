@@ -15,7 +15,7 @@ class UserAdmin1(admin.ModelAdmin):
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-   list_display = ('id', 'name', 'email', 'password', )
+   list_display = ('id', 'name', 'email','phone', 'password', 'address', 'country'  )
    list_display_links = ('id', 'name', 'email', 'password', )
    search_fields = ('id', 'name', 'email', 'password', )
    list_filter = ('id', 'name', 'email', 'password', )
@@ -23,7 +23,7 @@ class CompanyAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-   list_display = ('id', 'name', 'email', 'password', )
+   list_display = ('id', 'name', 'email','phone', 'password', )
    list_display_links = ('id', 'name', 'email', 'password', )
    search_fields = ('id', 'name', 'email', 'password', )
    list_filter = ('id', 'name', 'email', 'password', )
@@ -35,7 +35,7 @@ class CustomerAdmin(admin.ModelAdmin):
 class EducationAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'uuid',
+        
         'created',
         'updated',
         'customer',
@@ -49,7 +49,7 @@ class EducationAdmin(admin.ModelAdmin):
 class CompanyProfileAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'uuid',
+        
         'created',
         'updated',
         'name',
@@ -67,7 +67,7 @@ class CompanyProfileAdmin(admin.ModelAdmin):
 class WorkExperienceAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'uuid',
+        
         'created',
         'updated',
         'customer',
@@ -83,7 +83,7 @@ class CustomerProfileAdmin(admin.ModelAdmin):
     
     list_display = (
         'id',
-        'uuid',
+        
         'created',
         'updated',
         'name',
@@ -101,7 +101,7 @@ class CustomerProfileAdmin(admin.ModelAdmin):
 class JobAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'uuid',
+        
         'created',
         'updated',
         'company',
@@ -119,7 +119,7 @@ class JobAdmin(admin.ModelAdmin):
 class JobApplicationAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'uuid',
+        
         'created',
         'updated',
         'customer',

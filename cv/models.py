@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager , PermissionsMixin
 
+
 import datetime
 from django.utils.translation import gettext_lazy as _
 
@@ -44,6 +45,8 @@ class JobPosition(models.TextChoices):
 class EmploymentType(models.TextChoices):
     FULL_TIME = 'FULL TIME', 'Full time'
     PART_TIME = 'PART TIME', 'Part time'
+
+
 
 
 class WorkplaceType(models.TextChoices):
@@ -118,6 +121,7 @@ class User(AbstractBaseUser,PermissionsMixin):
         ADMIN = 'admin', 'Admin'
 
     base_role = Role.ADMIN
+    
     role = models.CharField(max_length=50, choices=Role.choices, default=base_role,editable=False)
     name = models.CharField(max_length=50,blank=True,null=True,default='Name')
     email = models.EmailField(max_length=50,unique=True,null=True,blank=True)
@@ -156,6 +160,7 @@ class CustomerManager(BaseUserManager):
 
 
 class Customer(User):
+   
     phone = models.CharField(max_length=50,blank=True,null=True,default='Phone')
     
 
@@ -188,6 +193,7 @@ class CompanyManger(BaseUserManager):
 
 
 class Company(User):
+    
     phone = models.CharField(max_length=50,blank=True,null=True,default='Phone')
     address = models.CharField(max_length=50,blank=True,null=True,default='Address')
     country = models.CharField(max_length=50, null=True, blank=True, default='Iraq')
@@ -215,7 +221,7 @@ class Profile(models.Model):
         abstract = True
 
   
-    uuid = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=  True    , default=uuid.uuid4, editable=False, unique=True)
     created = models.DateTimeField(editable=False, auto_now_add=True)
     updated = models.DateTimeField(editable=False, auto_now=True)
 
@@ -233,24 +239,32 @@ class CompanyProfile(Profile):
     address = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='company_profile/', null=True, blank=True, default='company_profile/default.png')
 
+
+    def __str__(self):
+        return self.name
+        
+    
+    
+
 @receiver(post_save, sender=Company)
 def create_user_profile(sender, instance, created, **kwargs):
     try:
-        CompanyProfile.objects.get(user=instance, name=instance.name, email=instance.email, country=instance.country, phone=instance.phone, password=instance.password)
+        CompanyProfile.objects.get(user=instance, name=instance.name, email=instance.email, country=instance.country, phone=instance.phone, password=instance.password,address=instance.address)
     except CompanyProfile.DoesNotExist:
         if created and instance.role == "COMPANY":
-            CompanyProfile.objects.create(user=instance, name=instance.name, email=instance.email, country=instance.country, phone=instance.phone, password=instance.password)
+            CompanyProfile.objects.create(user=instance, name=instance.name, email=instance.email, country=instance.country, phone=instance.phone, password=instance.password,address=instance.address)
         else:
             instance.company_profile.save()
 
 
 class Job(Profile):
     company = models.ForeignKey(CompanyProfile, related_name='job', on_delete=models.CASCADE)
-    position = models.CharField(choices=JobTitle.choices, max_length=30)
-    workplace = models.CharField(choices=WorkplaceType.choices, max_length=30)
-    location = models.CharField(choices=JobLocation.choices,max_length=40)
-    employment_type = models.CharField(choices=EmploymentType.choices, max_length=30)
+    position = models.CharField(choices=JobTitle.choices, max_length=30,blank=True,null=True)
+    workplace = models.CharField(choices=WorkplaceType.choices, max_length=30,blank=True,null=True)
+    location = models.CharField(choices=JobLocation.choices,max_length=40,blank=True,null=True)
+    employment_type = models.CharField(choices=EmploymentType.choices, max_length=30,blank=True,null=True)
     description = models.TextField(null=True, blank=True)
+    
 
 
 class CustomerProfile(Profile):
@@ -265,6 +279,9 @@ class CustomerProfile(Profile):
     image = models.ImageField(upload_to='customer_profile/', null=True, blank=True, default='default.jpg')
     cv = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf')
     saved_job = models.ManyToManyField(Job, related_name='job', blank=True)
+    
+   
+   
   
 @receiver(post_save, sender=Customer)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -299,8 +316,8 @@ class Education(Profile):
 
 
 class JobApplication(Profile):
-    customer = models.ForeignKey(CustomerProfile, related_name='job_application', on_delete=models.CASCADE, null=True, blank=True)
-    job = models.ForeignKey(Job, related_name='job_application', on_delete=models.CASCADE, null=True, blank=True)
+    customer = models.ForeignKey(CustomerProfile, related_name='job_application', on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, related_name='job_application', on_delete=models.CASCADE)
     category = models.CharField(choices=Category.choices, max_length=30,default=Category.LONG_LIST)
-
-    
+    why_apply = models.TextField(null=True, blank=True)
+   

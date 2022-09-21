@@ -44,6 +44,12 @@ INSTALLED_APPS = [
     'multiselectfield',
     'mptt',
     'django_extensions',
+    'django_rest_passwordreset',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
+    
 
     
 
