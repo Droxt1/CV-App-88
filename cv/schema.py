@@ -64,7 +64,6 @@ class EducationOut(Schema):
     degree: str
     school: str
 
-
 class CustomerOut(Schema):
     id: UUID4
     name: str
