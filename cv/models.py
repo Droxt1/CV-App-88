@@ -8,38 +8,18 @@ from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager , PermissionsMixin
-
-
 import datetime
 from django.utils.translation import gettext_lazy as _
+
+from cv.data.cities import JobLocation
+from cv.data.job_titles import JobTitle
+from cv.data.skills import Skills
 
 
 class Category(models.TextChoices):
     LONG_LIST = 'LONG_LIST', 'Long List'
     SHORT_LIST = 'SHORT LIST', 'Short List'
-
-
-
-class CompanyWorkType(models.TextChoices):
-    BACKEND = 'BACKEND', 'Backend'
-    FRONTEND = 'FRONTEND', 'Frontend'
-
-
-Skills =     (('item_key1', 'Item title 1.1'),
-              ('item_key2', 'Item title 1.2'),
-              ('item_key3', 'Item title 1.3'),
-              ('item_key4', 'Item title 1.4'),
-              ('item_key5', 'Item title 1.5'))
-
-
-class JobTitle(models.TextChoices):
-    BACKEND = 'BACKEND', 'Backend'
-    FRONTEND = 'FRONTEND', 'Frontend'
-
-
-class JobPosition(models.TextChoices):
-    BACKEND = 'BACKEND', 'Backend'
-    FRONTEND = 'FRONTEND', 'Frontend'
+    ALL = 'ALL', 'All'
 
 
 class EmploymentType(models.TextChoices):
@@ -47,24 +27,16 @@ class EmploymentType(models.TextChoices):
     PART_TIME = 'PART TIME', 'Part time'
 
 
-
-
 class WorkplaceType(models.TextChoices):
     ON_SITE = 'ON SITE', 'on site'
-    REMONTE = 'REMONTE', 'Remonte'
-    #hybird,
+    REMOTE = 'REMOTE', 'Remote'
+    HYBRID = 'HYBRID', 'Hybrid',
 
 
-class JobLocation(models.TextChoices):
-    BAGHDAD = 'BAGHDAD', 'Baghdad'
-    BASRA = 'BASRA', 'Basra'
+Language = (('Arabic', 'Arabic'),
+           ('English', 'English'),
+           ('Kurdish', 'Kurdish'),)
 
-
-Language = (('item_key1', 'Item title 1.1'),
-              ('item_key2', 'Item title 1.2'),
-              ('item_key3', 'Item title 1.3'),
-              ('item_key4', 'Item title 1.4'),
-              ('item_key5', 'Item title 1.5'))
 
 """-------------------------------------------------------------------------------------------------------------------"""  
 
@@ -318,6 +290,6 @@ class Education(Profile):
 class JobApplication(Profile):
     customer = models.ForeignKey(CustomerProfile, related_name='job_application', on_delete=models.CASCADE)
     job = models.ForeignKey(Job, related_name='job_application', on_delete=models.CASCADE)
-    category = models.CharField(choices=Category.choices, max_length=30,default=Category.LONG_LIST)
+    category = models.CharField(choices=Category.choices, max_length=30,default=Category.ALL)
     why_apply = models.TextField(null=True, blank=True)
    
