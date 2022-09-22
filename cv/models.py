@@ -1,6 +1,7 @@
 from datetime import datetime
 from email.mime import image
 from genericpath import exists
+from sqlite3 import Timestamp
 from unicodedata import name
 import uuid as uuid
 from django.db import models
@@ -10,7 +11,7 @@ from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager , PermissionsMixin
 import datetime
 from django.utils.translation import gettext_lazy as _
-
+from django.utils import timezone
 from cv.data.cities import JobLocation
 from cv.data.job_titles import JobTitle
 from cv.data.skills import Skills
@@ -258,6 +259,9 @@ class CustomerProfile(Profile):
     image = models.ImageField(upload_to='customer_profile/', null=True, blank=True, default='default.jpg')
     cv = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf')
     saved_job = models.ManyToManyField(Job, related_name='job', blank=True)
+
+    def __str__(self):
+        return self.name
     
    
    
@@ -289,8 +293,8 @@ class Education(Profile):
     customer = models.ForeignKey('CustomerProfile', related_name='education', on_delete=models.CASCADE)
     degree = models.CharField(max_length=255, null=True, blank=True)
     school = models.CharField(max_length=255, null=True, blank=True)
-    start_date = models.DateField(null=True, blank=True, default=datetime.date.today)
-    end_date = models.DateField(null=True, blank=True, default=None)
+    start_date = models.DateField(null=True, blank=True )
+    end_date = models.DateField(null=True, blank=True)
 
 
 
