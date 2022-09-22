@@ -15,6 +15,7 @@ from django.utils import timezone
 from cv.data.cities import JobLocation
 from cv.data.job_titles import JobTitle
 from cv.data.skills import Skills
+from pandas import Timestamp
 
 
 class Category(models.TextChoices):

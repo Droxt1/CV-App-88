@@ -17,12 +17,12 @@ def get_all_jobs(request):
     jobs = Job.objects.all()
     return jobs
 
-@job_router.get('/get_one/{job_id}', response=JobSchema)
+@job_router.get('/get_one/{job_uuid}', response=JobSchema)
 def get_one_job(request, job_uuid: UUID4):
     return Job.objects.get(id = job_uuid)
 
 
-@job_router.delete('/delete_job/{job_id}')
+@job_router.delete('/delete_job/{job_uuid}')
 def delete_job(request, job_uuid: UUID4):
     try:    
         job = Job.objects.get(id = job_uuid)
@@ -37,25 +37,12 @@ def delete_all_jobs(request):
     return {'message': 'all jobs deleted successfully'}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 @customer_router.get('/get_all_customers', response=List[CustomerOut])
 def gett(request,):
     return 200, CustomerProfile.objects.all()
 
 
-@customer_router.get('/get_one_customer/{customer_id}' ,response=CustomerOut)
+@customer_router.get('/get_one_customer/{customer_uuid}' ,response=CustomerOut)
 def det_one_customer(request, customer_id: UUID4):
     return CustomerProfile.objects.get(id = customer_id)
 
@@ -73,7 +60,7 @@ def update_customer(request, customer_id: UUID4, customer_in: CustomerProfileUpd
     return customer
 
 
-@customer_router.post('/save_job/{customer_id}/{job_id}')
+@customer_router.post('/save_job/{customer_uuid}/{job_uuid}')
 def save_job(request, customer_id: UUID4, job_id: UUID4):
     job = Job.objects.get(id = job_id)
     customer = CustomerProfile.objects.get(id = customer_id)
@@ -86,90 +73,33 @@ def delete_saved_job(request, customer_id: UUID4, job_id: UUID4):
     customer = CustomerProfile.objects.get(id = customer_id)
     return customer.saved_job.remove(job)
 
-@customer_router.get('/get_all_saved_jobs/{customer_id}', response=List[CustomerSavedJobOut])
+@customer_router.get('/get_all_saved_jobs/{customer_uuid}', response=List[CustomerSavedJobOut])
 def get_saved_jobs(request, customer_id: UUID4):
     customer = CustomerProfile.objects.get(id = customer_id)
     return customer.saved_job.all()
 
-@customer_router.post('apply_for_job/{customer_id}/{job_id}', response=JobApplicationOut)
+@customer_router.post('apply_for_job/{customer_uuid}/{job_uuid}', response=JobApplicationOut)
 def apply_for_job(request, customer_id: UUID4, job_id: UUID4, why_apply: str):
     job = Job.objects.get(id = job_id)
     customer = CustomerProfile.objects.get(id = customer_id)
     return JobApplication.objects.create(job=job, customer=customer,why_apply=why_apply)
 
-@customer_router.post('/upload_cv/{customer_id}', response=CustomerOut)
+@customer_router.post('/upload_cv/{customer_uuid}', response=CustomerOut)
 def upload_cv(request, customer_id: UUID4, cv: UploadedFile = File(...)):
     customer = CustomerProfile.objects.get(id = customer_id)
     customer.cv = cv
     customer.save()
     return customer
 
-@customer_router.post('/upload_profile_pic/{customer_id}', response=CustomerImage)
+@customer_router.post('/upload_profile_pic/{customer_uuid}', response=CustomerImage)
 def upload_profile_pic(request, customer_id: UUID4, profile_pic: UploadedFile = File(...)):
     customer = CustomerProfile.objects.get(id = customer_id)
     customer.image = profile_pic
     customer.save()
     return customer
 
-@customer_router.get('customer_work_experience/{customer_id}', response=List[WorkExperienceOut])
-def customer_work_experience(request, customer_id: UUID4):
-    customer = CustomerProfile.objects.get(id = customer_id)
-    return customer.work_experience.all()
 
-@customer_router.post('add_work_experience/{customer_id}', response=WorkExperienceOut)
-def add_work_experience(request, customer_id: UUID4, work_experience_in: WorkExperienceIn):
-    customer = CustomerProfile.objects.get(id = customer_id)
-    return WorkExperience.objects.create(customer=customer, **work_experience_in.dict())
-@customer_router.delete('delete_work_experience/{customer_id}/{work_experience_id}')
-def delete_work_experience(request, customer_id: UUID4, work_experience_id: UUID4):
-    work_experience = WorkExperience.objects.get(id = work_experience_id)
-    work_experience.delete()
-    return {'message': 'work experience deleted successfully'}
-@customer_router.put('update_work_experience/{customer_id}/{work_experience_id}', response=WorkExperienceOut)
-def update_work_experience(request, customer_id: UUID4, work_experience_id: UUID4, work_experience_in: WorkExperienceIn):
-    work_experience = WorkExperience.objects.get(id = work_experience_id)
-    work_experience.company_worked_for = work_experience_in.company_worked_for
-    work_experience.title = work_experience_in.title
-    work_experience.start_date = work_experience_in.start_date
-    work_experience.end_date = work_experience_in.end_date
-
-    work_experience.save()
-    return work_experience
-
-@customer_router.get('customer_education/{customer_id}', response=List[EducationOut])
-def customer_education(request, customer_id: UUID4):
-    customer = CustomerProfile.objects.get(id = customer_id)
-    return customer.education.all()
-@customer_router.post('add_education/{customer_id}', response=EducationOut)
-def add_education(request, customer_id: UUID4, education_in: EducationIn):
-    customer = CustomerProfile.objects.get(id = customer_id)
-    return Education.objects.create(customer=customer, **education_in.dict())
-@customer_router.delete('delete_education/{customer_id}/{education_id}')
-def delete_education(request, customer_id: UUID4, education_id: UUID4):
-    education = Education.objects.get(id = education_id)
-    education.delete()
-    return {'message': 'education deleted successfully'}
-@customer_router.put('update_education/{customer_id}/{education_id}', response=EducationOut)
-def update_education(request, customer_id: UUID4, education_id: UUID4, education_in: EducationIn):
-    education = Education.objects.get(id = education_id)
-    education.school = education_in.school
-    education.degree = education_in.degree
-    education.start_date = education_in.start_date
-    education.end_date = education_in.end_date
- 
-    education.save()
-    return education
-
-
-
-
-
-
-
-
-
-
-@company_router.get('/get_one/{company_id}', response=CompanyOut)
+@company_router.get('/get_one/{company_uuid}', response=CompanyOut)
 def get_one_company(request, company_uuid: UUID4):
     return CompanyProfile.objects.get(id = company_uuid)
 
@@ -186,37 +116,37 @@ def get_all_company(request):
 @company_router.put('/update_company/{company_id}', response=CompanyProfileUpdate)
 def update_company(request, company_id: UUID4, company_in: CompanyProfileUpdate):
     company = get_object_or_404(CompanyProfile, id=company_id)
-    company.name = company_in.worked
+    company.name = company_in.name
     company.phone = company_in.phone
     company.description = company_in.description
     company.address = company_in.address
     company.save()
     return company
-@company_router.post('/upload_logo/{company_id}', response=CompanyOut)
+@company_router.post('/upload_logo/{company_uuid}', response=CompanyOut)
 def upload_logo(request, company_id: UUID4, logo: UploadedFile = File(...)):
     company = CompanyProfile.objects.get(id = company_id)
     company.image = logo
     company.save()
     return company
-@company_router.get('/get_all_job_applications/{company_id}', response=List[JobApplicationOut])
+@company_router.get('/get_all_job_applications/{company_uuid}', response=List[JobApplicationOut])
 def get_all_job_applications(request, company_uuid: UUID4,job_uuid: UUID4):
     job = JobApplication.objects.get(id = job_uuid)
     return job.all()
 
 
 
-@company_router.post('/create_job/{company_id}', response=JobCreationSchema)
+@company_router.post('/create_job/{company_uuid}', response=JobCreationSchema)
 def create_job(request,  job: JobCreationSchema):
     qs = Job.objects.create(**job.dict())
     print("created")
     return qs 
 
-@company_router.get('/get_all_company_jobs/{company_id}', response=List[JobOut])
+@company_router.get('/get_all_company_jobs/{company_uuid}', response=List[JobOut])
 def get_all_company_jobs(request, company_id: UUID4):
     company = CompanyProfile.objects.get(id = company_id)
     return company.job.all()
     
-@company_router.put('/update_job/{company_id}', response=JobUpdateOut)
+@company_router.put('/update_job/{company_uuid}', response=JobUpdateOut)
 def update_job(request, job_in: JobUpdateOut,job_id:UUID4):
     job = get_object_or_404(Job,id = job_id)
     job.position = job_in.position
@@ -240,3 +170,4 @@ def delete_job_application(request, job_application_id: UUID4):
         delt = JobApplication.objects.get(id = job_application_id)
         delt.delete()
         return ('deleted')
+   

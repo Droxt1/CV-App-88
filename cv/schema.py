@@ -1,13 +1,15 @@
 from datetime import datetime
 from email.mime import image
-from sqlite3 import Timestamp
 from urllib import response
 import uuid
 from ninja import Schema , ModelSchema
 from pydantic import UUID4
 from typing import List, Optional
 from cv.models import *
-from datetime import datetime
+
+
+from cv.models import Company, Job, CustomerProfile , CompanyProfile , JobApplication
+from pandas import Timestamp
 
 
 class CompanyJOBOut(Schema):
@@ -45,7 +47,8 @@ class CompanyProfileUpdate(Schema):
 class CompanyJobOut(Schema):
 
     name: str = None
-    image: str = None  
+    image: str = None
+
 class JobOut(Schema):
     id: UUID4 = None
     position: str
@@ -60,11 +63,12 @@ class WorkExperienceOut(ModelSchema):
         model = WorkExperience
         model_fields = '__all__'
 
+
 class WorkExperienceIn(Schema):
     title: str = None
     company_worked_for: str = None
-    start_date: str = None
-    end_date:  str = None
+    start_date: Timestamp = None
+    end_date: Timestamp = None
 
 
 class EducationOut(ModelSchema):
@@ -72,13 +76,14 @@ class EducationOut(ModelSchema):
         model = Education
         model_fields = '__all__'
 
+
 class EducationIn(Schema):
-    degree: str  = None
+    degree: str = None
     school: str = None
-    start_date: str = None
-    end_date: str = None
-    
-  
+    start_date: Timestamp = None
+    end_date: Timestamp = None
+
+
 class CustomerOut(Schema):
     id: UUID4
     name: str
@@ -103,7 +108,7 @@ class CustomerProfileUpdate(Schema):
     skills: List[str] =None
     language: List[str] = None
     job_title: str = None
-    image:  str = None
+    image: str = None
     cv: str = None   
 
 class CustomerIn(Schema):
