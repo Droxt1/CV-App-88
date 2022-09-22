@@ -7,9 +7,6 @@ from cv.schema import *
 from ninja.files import UploadedFile
 
 
-
-
-
 job_router = Router(tags=['job'])
 customer_router = Router(tags=['customer'])
 company_router = Router(tags=['company'])

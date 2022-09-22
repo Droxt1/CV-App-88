@@ -1,3 +1,4 @@
+from datetime import datetime
 from email.mime import image
 from urllib import response
 import uuid
@@ -54,12 +55,21 @@ class JobOut(Schema):
     workplace: str
 
 
-   
+class WorkExperienceOut(Schema):
+    title: str
+    company_worked_for: str
+
+
+class EducationOut(Schema):
+    degree: str
+    school: str
 
 class CustomerOut(Schema):
     id: UUID4
     name: str
     phone: str
+    education: List[EducationOut]
+    work_experience: List[WorkExperienceOut]
     description: str
     address: str = None
     skills: List[str]
@@ -68,6 +78,7 @@ class CustomerOut(Schema):
     image: str = None
     cv: str = None
     saved_job: List[JobOut] = None
+
 
 class CustomerProfileUpdate(Schema):
     name: str = None
@@ -204,3 +215,6 @@ class CustomerImage(Schema):
 
 class CompanyImage(Schema):
     image: str
+
+
+

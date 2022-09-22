@@ -8,38 +8,18 @@ from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser,BaseUserManager , PermissionsMixin
-
-
 import datetime
 from django.utils.translation import gettext_lazy as _
+
+from cv.data.cities import JobLocation
+from cv.data.job_titles import JobTitle
+from cv.data.skills import Skills
 
 
 class Category(models.TextChoices):
     LONG_LIST = 'LONG_LIST', 'Long List'
     SHORT_LIST = 'SHORT LIST', 'Short List'
-
-
-
-class CompanyWorkType(models.TextChoices):
-    BACKEND = 'BACKEND', 'Backend'
-    FRONTEND = 'FRONTEND', 'Frontend'
-
-
-Skills =     (('item_key1', 'Item title 1.1'),
-              ('item_key2', 'Item title 1.2'),
-              ('item_key3', 'Item title 1.3'),
-              ('item_key4', 'Item title 1.4'),
-              ('item_key5', 'Item title 1.5'))
-
-
-class JobTitle(models.TextChoices):
-    BACKEND = 'BACKEND', 'Backend'
-    FRONTEND = 'FRONTEND', 'Frontend'
-
-
-class JobPosition(models.TextChoices):
-    BACKEND = 'BACKEND', 'Backend'
-    FRONTEND = 'FRONTEND', 'Frontend'
+    ALL = 'ALL', 'All'
 
 
 class EmploymentType(models.TextChoices):
@@ -47,24 +27,23 @@ class EmploymentType(models.TextChoices):
     PART_TIME = 'PART TIME', 'Part time'
 
 
-
-
 class WorkplaceType(models.TextChoices):
     ON_SITE = 'ON SITE', 'on site'
-    REMONTE = 'REMONTE', 'Remonte'
-    #hybird,
+    REMOTE = 'REMOTE', 'Remote'
+    HYBRID = 'HYBRID', 'Hybrid',
 
 
-class JobLocation(models.TextChoices):
-    BAGHDAD = 'BAGHDAD', 'Baghdad'
-    BASRA = 'BASRA', 'Basra'
+Language = (('Arabic', 'Arabic'),
+           ('English', 'English'),
+           ('Kurdish', 'Kurdish'),)
 
 
-Language = (('item_key1', 'Item title 1.1'),
-              ('item_key2', 'Item title 1.2'),
-              ('item_key3', 'Item title 1.3'),
-              ('item_key4', 'Item title 1.4'),
-              ('item_key5', 'Item title 1.5'))
+class CompanyType(models.TextChoices):
+    eCommerce = 'eCommerce', 'eCommerce'
+    TELECOM = 'TELECOM ', 'Telecom'
+    NGO = 'NGO', 'NGO'
+    MEDICAL = 'MEDICAL', 'Medical'
+    FOOD_DELIVERY = 'FOOD DELIVERY', 'Food Delivery'
 
 """-------------------------------------------------------------------------------------------------------------------"""  
 
@@ -233,7 +212,7 @@ class CompanyProfile(Profile):
     password = models.CharField(max_length=50,blank=True,null=True,default='Password')
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    work_type = models.CharField(choices=JobTitle.choices, max_length=20)
+    work_type = models.CharField(choices=CompanyType.choices, max_length=100)
     country = models.CharField(max_length=50, null=True, blank=True, default='Iraq')
     city = models.CharField(choices=JobLocation.choices, max_length=20)
     address = models.CharField(max_length=255, null=True, blank=True)
@@ -259,7 +238,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 class Job(Profile):
     company = models.ForeignKey(CompanyProfile, related_name='job', on_delete=models.CASCADE)
-    position = models.CharField(choices=JobTitle.choices, max_length=30,blank=True,null=True)
+    position = models.CharField(choices=JobTitle.choices, max_length=100, blank=True,null=True)
     workplace = models.CharField(choices=WorkplaceType.choices, max_length=30,blank=True,null=True)
     location = models.CharField(choices=JobLocation.choices,max_length=40,blank=True,null=True)
     employment_type = models.CharField(choices=EmploymentType.choices, max_length=30,blank=True,null=True)
@@ -275,7 +254,7 @@ class CustomerProfile(Profile):
     address = models.CharField(max_length=255, null=True, blank=True)
     skills = MultiSelectField(choices=Skills, max_choices=10, max_length=255)
     language = MultiSelectField(choices=Language, max_choices=10, max_length=255)
-    job_title = models.CharField(choices=JobTitle.choices, max_length=30)
+    job_title = models.CharField(choices=JobTitle.choices, max_length=100)
     image = models.ImageField(upload_to='customer_profile/', null=True, blank=True, default='default.jpg')
     cv = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf')
     saved_job = models.ManyToManyField(Job, related_name='job', blank=True)
@@ -299,7 +278,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 class WorkExperience(Profile):
     customer = models.ForeignKey(CustomerProfile, related_name='work_experience', on_delete=models.CASCADE)
-    title = models.CharField(choices=JobTitle.choices, max_length=30)
+    title = models.CharField(choices=JobTitle.choices, max_length=100)
     company_worked_for = models.CharField(max_length=50, null=False, blank=False)
     start_date = models.DateField(null=True, blank=True, default=datetime.date.today)
     end_date = models.DateField(null=True, blank=True, default=None)
@@ -318,6 +297,6 @@ class Education(Profile):
 class JobApplication(Profile):
     customer = models.ForeignKey(CustomerProfile, related_name='job_application', on_delete=models.CASCADE)
     job = models.ForeignKey(Job, related_name='job_application', on_delete=models.CASCADE)
-    category = models.CharField(choices=Category.choices, max_length=30,default=Category.LONG_LIST)
+    category = models.CharField(choices=Category.choices, max_length=30,default=Category.ALL)
     why_apply = models.TextField(null=True, blank=True)
    
