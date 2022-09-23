@@ -19,12 +19,12 @@ def get_all_jobs(request):
     jobs = Job.objects.all()
     return jobs
 
-@job_router.get('/get_one/{job_id}', response=JobSchema)
+@job_router.get('/get_one/', response=JobSchema)
 def get_one_job(request, job_uuid: UUID4):
     return Job.objects.get(id = job_uuid)
 
 
-@job_router.delete('/delete_job/{job_id}')
+@job_router.delete('/delete_job/')
 def delete_job(request, job_uuid: UUID4):
     try:    
         job = Job.objects.get(id = job_uuid)
@@ -196,7 +196,7 @@ def update_education(request, customer_id: UUID4, education_id: UUID4, education
 
 
 
-@company_router.get('/get_one/{company_id}', response=CompanyOut)
+@company_router.get('/get_one/', response=CompanyOut)
 def get_one_company(request, company_uuid: UUID4):
     return CompanyProfile.objects.get(id = company_uuid)
 
@@ -225,25 +225,25 @@ def upload_logo(request, company_id: UUID4, logo: UploadedFile = File(...)):
     company.image = logo
     company.save()
     return company
-@company_router.get('/get_all_job_applications/{company_id}', response=List[JobApplicationOut])
+@company_router.get('/get_all_job_applications/', response=List[JobApplicationOut])
 def get_all_job_applications(request, company_uuid: UUID4,job_uuid: UUID4):
     job = JobApplication.objects.get(id = job_uuid)
     return job.all()
 
 
 
-@company_router.post('/create_job/{company_id}', response=JobCreationSchema)
+@company_router.post('/create_job/', response=JobCreationSchema)
 def create_job(request,  job: JobCreationSchema):
     qs = Job.objects.create(**job.dict())
     print("created")
     return qs 
 
-@company_router.get('/get_all_company_jobs/{company_id}', response=List[JobOut])
+@company_router.get('/get_all_company_jobs/', response=List[JobOut])
 def get_all_company_jobs(request, company_id: UUID4):
     company = CompanyProfile.objects.get(id = company_id)
     return company.job.all()
     
-@company_router.put('/update_job/{company_id}', response=JobUpdateOut)
+@company_router.put('/update_job/', response=JobUpdateOut)
 def update_job(request, job_in: JobUpdateOut,job_id:UUID4):
     job = get_object_or_404(Job,id = job_id)
     job.position = job_in.position
