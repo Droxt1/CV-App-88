@@ -215,7 +215,7 @@ class CompanyProfile(Profile):
     description = models.TextField(null=True, blank=True)
     work_type = models.CharField(choices=CompanyType.choices, max_length=100)
     country = models.CharField(max_length=50, null=True, blank=True, default='Iraq')
-    city = models.CharField(choices=JobLocation.choices, max_length=20)
+    city = models.CharField(choices=JobLocation, max_length=20)
     address = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='company_profile/', null=True, blank=True, default='company_profile/default.png')
 
@@ -239,9 +239,9 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 class Job(Profile):
     company = models.ForeignKey(CompanyProfile, related_name='job', on_delete=models.CASCADE)
-    position = models.CharField(choices=JobTitle.choices, max_length=100, blank=True,null=True)
+    position = models.CharField(choices=JobTitle, max_length=100, blank=True,null=True)
     workplace = models.CharField(choices=WorkplaceType.choices, max_length=30,blank=True,null=True)
-    location = models.CharField(choices=JobLocation.choices,max_length=40,blank=True,null=True)
+    location = models.CharField(choices=JobLocation,max_length=40,blank=True,null=True)
     employment_type = models.CharField(choices=EmploymentType.choices, max_length=30,blank=True,null=True)
     description = models.TextField(null=True, blank=True)
     
@@ -255,7 +255,7 @@ class CustomerProfile(Profile):
     address = models.CharField(max_length=255, null=True, blank=True)
     skills = MultiSelectField(choices=Skills, max_choices=10, max_length=255)
     language = MultiSelectField(choices=Language, max_choices=10, max_length=255)
-    job_title = models.CharField(choices=JobTitle.choices, max_length=100)
+    job_title = models.CharField(choices=JobTitle, max_length=100)
     image = models.ImageField(upload_to='customer_profile/', null=True, blank=True, default='default.jpg')
     cv = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf')
     saved_job = models.ManyToManyField(Job, related_name='job', blank=True)
@@ -282,7 +282,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 
 class WorkExperience(Profile):
     customer = models.ForeignKey(CustomerProfile, related_name='work_experience', on_delete=models.CASCADE)
-    title = models.CharField(choices=JobTitle.choices, max_length=100)
+    title = models.CharField(choices=JobTitle, max_length=100)
     company_worked_for = models.CharField(max_length=50, null=False, blank=False)
     start_date = models.DateField(null=True, blank=True, default=datetime.date.today)
     end_date = models.DateField(null=True, blank=True, default=None)

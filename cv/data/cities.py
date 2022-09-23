@@ -1,14 +1,12 @@
-from django.db import models
-
-class JobLocation(models.TextChoices):
-    BAGHDAD = 'BAGHDAD', 'Baghdad'
-    BASRAH = 'BASRAH', 'Basrah'
-    ARBIL = 'ARBIL', 'Arbil'
-    SULAYMANIYAH = 'SULAYMANIYAH', 'Sulaymaniyah'
-    KARKH = 'KARKH', 'Karkh'
-    KARBALA = 'KARBALA', 'Karbala'
-    NAJAF = 'NAJAF', 'Najaf'
-    RAMADI = 'RAMADI', 'Ramadi'
-    HILLAH = 'HILLAH', 'Hillah'
-    NASIRIYAH = 'NASIRIYAH', 'Nasiriyah'
-    DUHOK = 'DUHOK', 'Duhok'
+JobLocation = (
+    ('BAGHDAD', 'Baghdad'),
+    ('BASRAH', 'Basrah'),
+    ('ARBIL', 'Arbil'),
+    ('SULAYMANIYAH', 'Sulaymaniyah'),
+     ('KARKH', 'Karkh'),
+     ('KARBALA', 'Karbala'),
+    ( 'NAJAF', 'Najaf'),
+     ('RAMADI', 'Ramadi'),
+     ('HILLAH', 'Hillah'),
+     ('NASIRIYAH', 'Nasiriyah'),
+    ( 'DUHOK', 'Duhok'))
