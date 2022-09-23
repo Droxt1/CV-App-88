@@ -10,6 +10,7 @@ from cv.models import *
 from datetime import datetime
 
 
+
 class CompanyJOBOut(Schema):
     id: UUID4
     position: str = None
@@ -94,7 +95,12 @@ class CustomerOut(Schema):
     cv: str = None
     saved_job: List[JobOut] = None
 
-
+class SkillOut(Schema):
+    skills: str
+class JobTout(Schema):
+    job_title: str
+class CityOut(Schema):
+    city: str
 class CustomerProfileUpdate(Schema):
     name: str = None
     phone: str =None
