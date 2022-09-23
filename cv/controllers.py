@@ -1,5 +1,6 @@
 from ninja import Router , File
 from ninja.pagination import paginate, PageNumberPagination
+from ninja.pagination import RouterPaginated
 from django.shortcuts import get_object_or_404
 from cv.models import *
 from typing import List
@@ -9,9 +10,9 @@ from cv.data import *
 
 
 
-job_router = Router(tags=['job'])
-customer_router = Router(tags=['customer'])
-company_router = Router(tags=['company'])
+job_router = RouterPaginated(tags=['job'])
+customer_router = RouterPaginated(tags=['customer'])
+company_router = RouterPaginated(tags=['company'])
 
 
 @job_router.get('/get_all_jobs', response=List[JobSchema])
@@ -78,7 +79,8 @@ def Job_title_Out(request):
 
 
 @customer_router.get('/get_all_customers', response=List[CustomerOut])
-def gett(request,):
+def gett(request):
+    
     return 200, CustomerProfile.objects.all()
 
 
@@ -206,7 +208,6 @@ def search_company(request, company_name: str):
     return CompanyProfile.objects.filter(name__icontains = company_name)
 
 @company_router.get('/get_all', response=List[CompanyOut])
-
 def get_all_company(request):
     return 200, CompanyProfile.objects.all()
 
