@@ -81,16 +81,16 @@ class EducationIn(Schema):
     
   
 class CustomerOut(Schema):
-    id: UUID4
-    name: str
-    phone: str
-    education: List[EducationOut]
-    work_experience: List[WorkExperienceOut]
-    description: str
+    id: UUID4 = None
+    name: str = None
+    phone: str = None
+    education: List[EducationOut] = None
+    work_experience: List[WorkExperienceOut] = None
+    description: str = None
     address: str = None
-    skills: List[str]
-    language: List[str]
-    job_title: str
+    skills: List[str]   = None
+    language: List[str] = None
+    job_title: str = None
     image: str = None
     cv: str = None
     saved_job: List[JobOut] = None
