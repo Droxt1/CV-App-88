@@ -1,6 +1,6 @@
-from ninja import Router , File
+from ninja import Router 
+from ninja.pagination import paginate, PageNumberPagination ,RouterPaginated
 from ninja.pagination import paginate, PageNumberPagination
-from ninja.pagination import RouterPaginated
 from django.shortcuts import get_object_or_404
 from cv.models import *
 from typing import List
@@ -11,8 +11,10 @@ from cv.data import *
 
 
 job_router = RouterPaginated(tags=['job'])
-customer_router = RouterPaginated(tags=['customer'])
-company_router = RouterPaginated(tags=['company'])
+customer_router = Router(tags=['customer'])
+company_router = Router(tags=['company'])
+
+
 
 
 @job_router.get('/get_all_jobs', response=List[JobSchema])
@@ -80,8 +82,9 @@ def Job_title_Out(request):
 
 @customer_router.get('/get_all_customers', response=List[CustomerOut])
 def gett(request):
-    
-    return 200, CustomerProfile.objects.all()
+
+   profiles = CustomerProfile.objects.all()
+   return profiles
 
 
 @customer_router.get('/get_one_customer/{customer_id}' ,response=CustomerOut)
@@ -209,7 +212,8 @@ def search_company(request, company_name: str):
 
 @company_router.get('/get_all', response=List[CompanyOut])
 def get_all_company(request):
-    return 200, CompanyProfile.objects.all()
+    profiles = CompanyProfile.objects.all()
+    return profiles
 
 @company_router.put('/update_company/{company_id}', response=CompanyProfileUpdate)
 def update_company(request, company_id: UUID4, company_in: CompanyProfileUpdate):
