@@ -11,14 +11,14 @@ customer_router = Router(tags=['customer'])
 
 
 @customer_router.get('/', response=List[CustomerOut])
-def gett(request):
+def get_all_customers(request):
 
     profiles = CustomerProfile.objects.all()
     return profiles
 
 
 @customer_router.get('/{customer_id}', response=CustomerOut)
-def det_one_customer(request, customer_id: UUID4):
+def get_one_customer(request, customer_id: UUID4):
     return CustomerProfile.objects.get(id=customer_id)
 
 
