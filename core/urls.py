@@ -16,14 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
-from cv.controllers import *
+from cv.controllers.customer import customer_router
+from cv.controllers.company import company_router
+from cv.controllers.application import application_router
+from cv.controllers.job import job_router
+from cv.controllers.meta import meta_router
 
 api = NinjaAPI(version = '1.0' , title = 'CV API' , description = 'CV API  Alpha')
 
 
-api.add_router('job/', job_router)
-api.add_router('customer/', customer_router)
-api.add_router('company/', company_router)
+api.add_router('jobs/', job_router)
+api.add_router('customers/', customer_router)
+api.add_router('companies/', company_router)
+api.add_router('applications/', application_router)
+api.add_router('meta/', meta_router)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
