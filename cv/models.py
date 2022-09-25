@@ -257,7 +257,7 @@ class CustomerProfile(Profile):
     language = MultiSelectField(choices=Language, max_choices=10, max_length=255)
     job_title = models.CharField(choices=JobTitle, max_length=100)
     image = models.ImageField(upload_to='customer_profile/', null=True, blank=True, default='default.jpg')
-    cv = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf')
+    cv_url = models.FileField(upload_to='customer_profile/', null=True, blank=True,default='default.pdf',)
     saved_job = models.ManyToManyField(Job, related_name='job', blank=True)
 
     def __str__(self):

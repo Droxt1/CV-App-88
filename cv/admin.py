@@ -91,7 +91,7 @@ class CustomerProfileAdmin(admin.ModelAdmin):
         'address',
         'skills',
         'language',
-        'job_title',  'cv')
+        'job_title',  'cv_url')
     
     list_filter = ('created', 'updated')
 
