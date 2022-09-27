@@ -25,6 +25,9 @@ def get_one_job_application(request, job_application_id: UUID4):
 
 @application_router.delete('/{job_application_id}', response=JobApplicationOut)
 def delete_job_application(request, job_application_id: UUID4):
-    delt = JobApplication.objects.get(id=job_application_id)
-    delt.delete()
-    return ('deleted')
+    try:
+        delt = JobApplication.objects.get(id=job_application_id)
+        delt.delete()
+    except JobApplication.DoesNotExist:
+        return {'error': 'Job Application does not exist'}
+    return {'success': 'Job Application deleted successfully'}

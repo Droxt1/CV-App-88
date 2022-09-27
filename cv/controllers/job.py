@@ -43,12 +43,6 @@ def create_job(request,  job: JobCreationSchema):
     return qs
 
 
-@job_router.get('/{company_id}', response=List[JobOut])
-def get_all_company_jobs(request, company_id: UUID4):
-    company = CompanyProfile.objects.get(id=company_id)
-    return company.job.all()
-
-
 @job_router.put('/{job_id}', response=JobUpdateOut)
 def update_job(request, job_in: JobUpdateOut, job_id: UUID4):
     job = get_object_or_404(Job, id=job_id)

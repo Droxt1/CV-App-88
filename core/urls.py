@@ -21,6 +21,8 @@ from cv.controllers.company import company_router
 from cv.controllers.application import application_router
 from cv.controllers.job import job_router
 from cv.controllers.meta import meta_router
+from django.conf import settings
+from django.conf.urls.static import static
 
 api = NinjaAPI(version = '1.0' , title = 'CV API' , description = 'CV API  Alpha')
 
@@ -35,4 +37,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("api/", api.urls),
     
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
