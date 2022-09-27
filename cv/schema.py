@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from ninja import Schema, ModelSchema
 from pydantic import UUID4
 from typing import List
@@ -25,7 +25,6 @@ class CompanyOut(Schema):
     city: str = None
     address: str = None
     image: str = None
-    job: List[CompanyJOBOut] = None
 
 
 class CompanyProfileUpdate(Schema):
@@ -40,44 +39,71 @@ class CompanyProfileUpdate(Schema):
 
 
 class CompanyJobOut(Schema):
-
+    id: UUID4
     name: str = None
     image: str = None
 
 
 class JobOut(Schema):
     id: UUID4 = None
-    position: str
-    employment_type: str
-    description: str
-    location: str
-    workplace: str
+    company: CompanyJobOut = None
+    position: str = None
+    employment_type: str = None
+    description: str = None
+    location: str = None
+    workplace: str = None
 
 
-class WorkExperienceOut(ModelSchema):
-    class Config:
-        model = WorkExperience
-        model_fields = '__all__'
+class WorkExperienceOut(Schema):
+    id: UUID4 = None
+    customer_id: UUID4 = None
+    title: str = None
+    company_worked_for: str = None
+    start_date: date = None
+    end_date: date = None
+
+
+class WorkExperienceUpdateIn(Schema):
+    id: UUID4 = None
+    customer_id: UUID4 = None
+    title: str = None
+    company_worked_for: str = None
+    start_date: date = None
+    end_date: date = None
 
 
 class WorkExperienceIn(Schema):
+    customer_id: UUID4 = None
     title: str = None
     company_worked_for: str = None
-    start_date: str = None
-    end_date:  str = None
+    start_date: date
+    end_date: date = None
 
 
-class EducationOut(ModelSchema):
-    class Config:
-        model = Education
-        model_fields = '__all__'
+class EducationOut(Schema):
+    id: UUID4 = None
+    customer_id: UUID4 = None
+    school: str = None
+    degree: str = None
+    start_date: date = None
+    end_date: date = None
 
 
 class EducationIn(Schema):
+    customer_id: UUID4 = None
     degree: str = None
     school: str = None
-    start_date: str = None
-    end_date: str = None
+    start_date: date = None
+    end_date: date = None
+
+
+class EducationUpdateIn(Schema):
+    id: UUID4 = None
+    customer_id: UUID4 = None
+    degree: str = None
+    school: str = None
+    start_date: date = None
+    end_date: date = None
 
 
 class CustomerOut(Schema):
@@ -93,7 +119,6 @@ class CustomerOut(Schema):
     job_title: str = None
     image: str = None
     cv: str = None
-    saved_job: List[JobOut] = None
 
 
 class SkillOut(Schema):
@@ -165,19 +190,26 @@ class CompanyProfileUpdate(Schema):
     work_type: str = None
     city: str = None
     address: str = None
-    image: str = None
 
 
 class CustomerProfileUpdate(Schema):
+    name: str = None
+    phone: str = None
+    description: str = None
+    address: str = None
+    skills: List[str] = None
+    language: List[str] = None
+    job_title: str = None
+
+
+class CustomerProfileUpdateIn(Schema):
     name: str
     phone: str
     description: str
     address: str
+    job_title: str
     skills: List[str]
     language: List[str]
-    job_title: str
-    image: str
-    cv: str
 
 
 class JobSchema(Schema):
@@ -189,6 +221,17 @@ class JobSchema(Schema):
     description: str = None
     location: str = None
     workplace: str = None
+
+
+class JobSchemaOut(Schema):
+    id: UUID4
+    company: CompanyJobOut
+    position: str = None
+    employment_type: str = None
+    description: str = None
+    location: str = None
+    workplace: str = None
+    saved: bool = False
 
 
 class CompanyJobCreate(Schema):
@@ -237,6 +280,12 @@ class JobApplicationOut(Schema):
     why_apply: str = None
 
 
+class JobApplicationIn(Schema):
+    customer_id: UUID4 = None
+    job_id: UUID4 = None
+    why_apply: str = None
+
+
 class JobUpdateOut(Schema):
     position: str = None
     employment_type: str = None
@@ -246,17 +295,36 @@ class JobUpdateOut(Schema):
 
 
 class CustomerSavedJobOut(Schema):
-    position: str
-    employment_type: str
-    description: str
-    location: str
-    workplace: str
-    company: CompanyJobOut
+    id: UUID4 = None
+    company: CompanyJobOut = None
+    position: str = None
+    employment_type: str = None
+    description: str = None
+    location: str = None
+    workplace: str = None
 
 
 class CustomerImage(Schema):
-    image: str
+    image: str = None
+
+
+class CustomerId(Schema):
+    customer_id: UUID4
+
+
+class CV(Schema):
+    cv: str
+
+
+class CompanyID(Schema):
+    company_id: UUID4
 
 
 class CompanyImage(Schema):
     image: str
+
+class WKID(Schema):
+    work_experience_id: UUID4
+
+class EDID(Schema):
+    education_id: UUID4
