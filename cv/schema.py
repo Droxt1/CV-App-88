@@ -322,3 +322,9 @@ class CompanyID(Schema):
 
 class CompanyImage(Schema):
     image: str
+
+class WKID(Schema):
+    work_experience_id: UUID4
+
+class EDID(Schema):
+    education_id: UUID4

@@ -10,14 +10,14 @@ from cv.data import *
 customer_router = Router(tags=['customer'])
 
 
-@customer_router.get('/{customer_id}', response=CustomerOut)
-def get_one_customer(request, customer_id: UUID4):
-    return CustomerProfile.objects.get(id=customer_id)
-
-
 @customer_router.get('/', response=List[CustomerOut])
 def get_all_customers(request):
     return CustomerProfile.objects.all()
+
+
+@customer_router.get('/{customer_id}', response=CustomerOut)
+def get_one_customer(request, customer_id: UUID4):
+    return CustomerProfile.objects.get(id=customer_id)
 
 
 @customer_router.put('/{customer_id}', response=CustomerProfileUpdate)
@@ -28,6 +28,9 @@ def update_customer(request, customer_id: UUID4, customer_in: CustomerProfileUpd
     customer.description = customer_in.description
     customer.address = customer_in.address
     customer.job_title = customer_in.job_title
+    customer.Skills = customer_in.skills
+    customer.language = customer_in.language
+
     customer.save()
     return customer
 
@@ -67,13 +70,6 @@ def add_work_experience(request,  payload: WorkExperienceIn):
     return qs
 
 
-@customer_router.delete('delete_work_experience/{customer_id}/{work_experience_id}')
-def delete_work_experience(request, customer_id: UUID4, work_experience_id: UUID4):
-    work_experience = WorkExperience.objects.get(id=work_experience_id)
-    work_experience.delete()
-    return {'message': 'work experience deleted successfully'}
-
-
 @customer_router.put('update_work_experience/', response=WorkExperienceOut)
 def update_work_experience(request, payload: WorkExperienceUpdateIn):
     qs = WorkExperience.objects.get(
@@ -84,6 +80,14 @@ def update_work_experience(request, payload: WorkExperienceUpdateIn):
     qs.end_date = payload.end_date
     qs.save()
     return qs
+
+
+@customer_router.delete('delete_work_experience/')
+def delete_work_experience(request, payload: WKID):
+    qs = WorkExperience.objects.get(
+        id=payload.work_experience_id)
+    qs.delete()
+    return {'success': 'Work Experience deleted successfully'}
 
 
 @customer_router.post('add_education/', response=EducationOut)
@@ -101,6 +105,14 @@ def update_education(request, payload: EducationUpdateIn):
     qs.end_date = payload.end_date
     qs.save()
     return qs
+
+
+@customer_router.delete('delete_education/')
+def delete_education(request,payload: EDID):
+    qs = Education.objects.get(id=payload.education_id)
+    qs.delete()
+    return {'success': 'Education deleted successfully'}
+    
 
 
 """File Upload"""

@@ -23,7 +23,7 @@ def get_one_job_application(request, job_application_id: UUID4):
     return JobApplication.objects.get(id=job_application_id)
 
 
-@application_router.delete('/{job_application_id}', response=JobApplicationOut)
+@application_router.delete('/{job_application_id}')
 def delete_job_application(request, job_application_id: UUID4):
     try:
         delt = JobApplication.objects.get(id=job_application_id)
