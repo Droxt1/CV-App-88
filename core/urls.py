@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
+
+from cv.Auth.API.comapny import company_auth_router
+from cv.Auth.API.customer import customer_auth_router
 from cv.controllers.customer import customer_router
 from cv.controllers.company import company_router
 from cv.controllers.application import application_router
@@ -24,17 +27,18 @@ from cv.controllers.meta import meta_router
 from django.conf import settings
 from django.conf.urls.static import static
 
-api = NinjaAPI(version = '1.0' , title = 'CV API' , description = 'CV API  Alpha')
-
+api = NinjaAPI(version='1.0', title='CV API', description='CV API  Alpha')
 
 api.add_router('jobs/', job_router)
 api.add_router('customers/', customer_router)
 api.add_router('companies/', company_router)
 api.add_router('applications/', application_router)
 api.add_router('meta/', meta_router)
+api.add_router('auth/', company_auth_router)
+api.add_router('auth/', customer_auth_router)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("api/", api.urls),
-    
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  path('admin/', admin.site.urls),
+                  path("api/", api.urls),
+
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

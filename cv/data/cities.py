@@ -1,12 +1,12 @@
 JobLocation = (
-    ('BAGHDAD', 'Baghdad'),
-    ('BASRAH', 'Basrah'),
-    ('ARBIL', 'Arbil'),
-    ('SULAYMANIYAH', 'Sulaymaniyah'),
-     ('KARKH', 'Karkh'),
-     ('KARBALA', 'Karbala'),
-    ( 'NAJAF', 'Najaf'),
-     ('RAMADI', 'Ramadi'),
-     ('HILLAH', 'Hillah'),
-     ('NASIRIYAH', 'Nasiriyah'),
-    ( 'DUHOK', 'Duhok'))
+    ('Baghdad', 'Baghdad'),
+    ('Basrah', 'Basrah'),
+    ('Arbil', 'Arbil'),
+    ('Sulaymaniyah', 'Sulaymaniyah'),
+    ('Karkh', 'Karkh'),
+    ('Karbala', 'Karbala'),
+    ('Najaf', 'Najaf'),
+    ('Ramadi', 'Ramadi'),
+    ('Hillah', 'Hillah'),
+    ('Nasiriyah', 'Nasiriyah'),
+    ('Duhok', 'Duhok'))

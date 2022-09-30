@@ -1,17 +1,11 @@
-from datetime import datetime
-from email.mime import image
-from genericpath import exists
-from sqlite3 import Timestamp
-from unicodedata import name
+
 import uuid as uuid
 from django.db import models
 from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-import datetime
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
 from cv.data.cities import JobLocation
 from cv.data.job_titles import JobTitle
 from cv.data.skills import Skills
@@ -70,7 +64,7 @@ class UserManager(BaseUserManager):
     def create_staffuser(self, email, password):
         """
     Custom user model where the email address is the unique identifier
-    and has an is_admin field to allow access to the admin app 
+    and has an is_admin field to allow access to the admin app
     """
 
     def create_user(self, email, password, **extra_fields):
@@ -101,7 +95,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ADMIN = 'admin', 'Admin'
 
     base_role = Role.ADMIN
-
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     role = models.CharField(
         max_length=50, choices=Role.choices, default=base_role, editable=False)
     name = models.CharField(max_length=50, blank=True,
@@ -109,8 +103,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         max_length=50, unique=True, null=True, blank=True)
     is_staff = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=True)
-    is_active = models.BooleanField(default=False)
+
+    is_active = models.BooleanField(default=True)
     USERNAME_FIELD = 'email'
     objects = UserManager()
 
@@ -120,6 +116,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def save(self, *args, **kwargs):
         if not self.pk:
             self.role = self.base_role
+
         super().save(*args, **kwargs)
 
 
@@ -153,9 +150,11 @@ class Customer(User):
 
     Customer = CustomerManager()
 
+    class meta:
+        unique_together = ('email', 'phone')
+
 
 """-------------------------------------------------------------------------------------------------------------------"""
-
 
 """*******************************************************************************************************************"""
 
@@ -178,7 +177,6 @@ class CompanyManger(BaseUserManager):
 
 
 class Company(User):
-
     phone = models.CharField(max_length=50, blank=True,
                              null=True, default='Phone')
     address = models.CharField(
@@ -194,7 +192,6 @@ class Company(User):
 
 
 class Profile(models.Model):
-
     class Meta:
         abstract = True
 
@@ -202,17 +199,18 @@ class Profile(models.Model):
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     created = models.DateTimeField(editable=False, auto_now_add=True)
     updated = models.DateTimeField(editable=False, auto_now=True)
+    is_active = models.BooleanField(default=True)
 
 
 class CompanyProfile(Profile):
     user = models.OneToOneField(
         Company, on_delete=models.CASCADE, related_name='company_profile')
     phone = models.CharField(max_length=50, blank=True,
-                             null=True, default='Phone')
+                             null=True, default='Phone', unique=True)
     email = models.EmailField(
-        max_length=50, unique=True, null=True, blank=True)
+        max_length=50, null=True, blank=True)
     password = models.CharField(
-        max_length=50, blank=True, null=True, default='Password')
+        max_length=32, blank=True, null=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     work_type = models.CharField(choices=CompanyType.choices, max_length=100)
@@ -221,7 +219,7 @@ class CompanyProfile(Profile):
     city = models.CharField(choices=JobLocation, max_length=20)
     address = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='company/', null=True,
-                              blank=True, default='company_profile/default.png')
+                              blank=True, default='company/default.png')
 
     def __str__(self):
         return self.name
@@ -235,7 +233,8 @@ def create_user_profile(sender, instance, created, **kwargs):
     except CompanyProfile.DoesNotExist:
         if created and instance.role == "COMPANY":
             CompanyProfile.objects.create(user=instance, name=instance.name, email=instance.email,
-                                          country=instance.country, phone=instance.phone, password=instance.password, address=instance.address)
+                                          country=instance.country, phone=instance.phone, password=instance.password,
+                                          address=instance.address)
         else:
             instance.company_profile.save()
 
@@ -252,6 +251,7 @@ class Job(Profile):
     employment_type = models.CharField(
         choices=EmploymentType.choices, max_length=30, blank=True, null=True)
     description = models.TextField(null=True, blank=True)
+    is_featured = models.BooleanField(default=False)
 
     def __str__(self):
         return self.position
@@ -261,7 +261,8 @@ class CustomerProfile(Profile):
     user = models.OneToOneField(
         Customer, on_delete=models.CASCADE, related_name='customer_profile')
     phone = models.CharField(null=True, blank=True, max_length=20, unique=True)
-    name = models.CharField(max_length=50,  null=True, blank=True)
+    password = models.CharField(null=True, blank=True,max_length=32)
+    name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     skills = MultiSelectField(choices=Skills, max_choices=10, max_length=255)
@@ -308,7 +309,7 @@ class Education(Profile):
     degree = models.CharField(max_length=255, null=True, blank=True)
     school = models.CharField(max_length=255, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True, )
-    end_date = models.DateField(null=True, blank=True,)
+    end_date = models.DateField(null=True, blank=True, )
 
 
 class JobApplication(Profile):
