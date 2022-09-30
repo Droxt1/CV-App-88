@@ -6,6 +6,11 @@ from cv.models import *
 from datetime import datetime
 
 
+class FourOFour(Schema):
+    error: str
+
+class two00_OK(Schema):
+    message: str
 class CompanyJOBOut(Schema):
     id: UUID4
     position: str = None
@@ -39,7 +44,7 @@ class CompanyProfileUpdate(Schema):
 
 
 class CompanyJobOut(Schema):
-    id: UUID4
+    id: UUID4 = None
     name: str = None
     image: str = None
 
@@ -141,7 +146,7 @@ class CustomerProfileUpdate(Schema):
     skills: List[str] = None
     language: List[str] = None
     job_title: str = None
-    image:  str = None
+    image: str = None
     cv: str = None
 
 
@@ -213,14 +218,16 @@ class CustomerProfileUpdateIn(Schema):
 
 
 class JobSchema(Schema):
-    id: UUID4
-    created = datetime.now()
-    company: CompanyJobOut
+    id: UUID4 = None
+    company: CompanyJobOut = None
+    created = datetime.now() 
     position: str = None
     employment_type: str = None
     description: str = None
     location: str = None
     workplace: str = None
+    is_featured: bool = None
+   
 
 
 class JobSchemaOut(Schema):
@@ -239,7 +246,6 @@ class CompanyJobCreate(Schema):
 
 
 class JobCreationSchema(Schema):
-
     company_id: UUID4 = None
     position: str = None
     employment_type: str = None
@@ -278,6 +284,7 @@ class JobApplicationOut(Schema):
     customer: CustomerApplyiedJobs = None
     job: JobApplied = None
     why_apply: str = None
+    
 
 
 class JobApplicationIn(Schema):
@@ -323,8 +330,10 @@ class CompanyID(Schema):
 class CompanyImage(Schema):
     image: str
 
+
 class WKID(Schema):
     work_experience_id: UUID4
+
 
 class EDID(Schema):
     education_id: UUID4

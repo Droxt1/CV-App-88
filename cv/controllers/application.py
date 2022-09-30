@@ -1,7 +1,6 @@
 from email.mime import application
 from ninja import Router, File
-from ninja.pagination import paginate, PageNumberPagination, RouterPaginated
-from ninja.pagination import paginate, PageNumberPagination
+from ninja.pagination import paginate
 from django.shortcuts import get_object_or_404
 from cv.models import *
 from typing import List
@@ -14,8 +13,9 @@ application_router = Router(tags=['application'])
 
 
 @application_router.get('/', response=List[JobApplicationOut])
+@paginate
 def get_all_jobs_applications(request):
-    return JobApplication.objects.all()
+    return JobApplication.objects.all().order_by('-created')
 
 
 @application_router.get('/{job_application_id}', response=JobApplicationOut)

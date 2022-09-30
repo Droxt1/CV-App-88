@@ -1,10 +1,11 @@
 from ninja import Router, File
 from django.shortcuts import get_object_or_404
+from rest_framework import status
+from cv.Auth.Authorization import AuthBearer
 from cv.models import *
 from typing import List
 from cv.schema import *
 from ninja.files import UploadedFile
-from cv.data import *
 
 
 company_router = Router(tags=['company'])
@@ -27,7 +28,7 @@ def search_company(request, company_name: str):
 
 
 @company_router.put('/{company_id}', response=CompanyProfileUpdate)
-def update_company(request, company_id: UUID4, company_in: CompanyProfileUpdate):
+def update_company(request, company_id: UUID4, company_in: CompanyProfileUpdate,):
     company = get_object_or_404(CompanyProfile, id=company_id)
     company.name = company_in.name
     company.phone = company_in.phone
@@ -37,14 +38,20 @@ def update_company(request, company_id: UUID4, company_in: CompanyProfileUpdate)
     return company
 
 
-@company_router.post('/Image/', response=CompanyImage)
+@company_router.post('/Image/', response={200: CompanyImage, 400: FourOFour})
 def upload_logo(request, company_id: UUID4, image: UploadedFile = File(...)):
-    qs = CompanyProfile.objects.get(id=company_id)
+    try:
+        qs = CompanyProfile.objects.get(id=company_id)
 
-    def replace_old_image(self, image):
-        if self.image:
-            self.image.delete()
-        self.image = image
-        self.save()
-    replace_old_image(qs, image)
-    return qs
+        def replace_old_image(self, image):
+            if self.image:
+                self.image.delete()
+            self.image = image
+            self.save()
+        if image.content_type == 'image/jpeg' or image.content_type == 'image/png' or image.content_type == 'image/jpg':
+            replace_old_image(qs, image)
+            return qs
+        else:
+            return status.HTTP_400_BAD_REQUEST, {'error': 'image format not supported'}
+    except:
+        return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
