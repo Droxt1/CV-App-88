@@ -2,6 +2,8 @@ from email.mime import application
 from ninja import Router, File
 from ninja.pagination import paginate
 from django.shortcuts import get_object_or_404
+
+from cv.Auth.Authorization import CompanyAuth
 from cv.models import *
 from typing import List
 from cv.schema import *
@@ -12,18 +14,18 @@ from cv.data import *
 application_router = Router(tags=['application'])
 
 
-@application_router.get('/', response=List[JobApplicationOut])
+@application_router.get('/', response=List[JobApplicationOut], auth=CompanyAuth())
 @paginate
 def get_all_jobs_applications(request):
     return JobApplication.objects.all().order_by('-created')
 
 
-@application_router.get('/{job_application_id}', response=JobApplicationOut)
+@application_router.get('/{job_application_id}', response=JobApplicationOut, auth=CompanyAuth())
 def get_one_job_application(request, job_application_id: UUID4):
     return JobApplication.objects.get(id=job_application_id)
 
 
-@application_router.delete('/{job_application_id}')
+@application_router.delete('/{job_application_id}', auth=CompanyAuth())
 def delete_job_application(request, job_application_id: UUID4):
     try:
         delt = JobApplication.objects.get(id=job_application_id)

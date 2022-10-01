@@ -11,7 +11,7 @@ from ninja.files import UploadedFile
 company_router = Router(tags=['company'])
 
 
-@company_router.get('/', response=List[CompanyOut])
+@company_router.get('/', response=List[CompanyOut], )
 def get_all_company(request):
     profiles = CompanyProfile.objects.all()
     return profiles
@@ -27,7 +27,7 @@ def search_company(request, company_name: str):
     return CompanyProfile.objects.filter(name__icontains=company_name)
 
 
-@company_router.put('/{company_id}', response=CompanyProfileUpdate)
+@company_router.put('/{company_id}', response=CompanyProfileUpdate, auth=CompanyAuth())
 def update_company(request, company_id: UUID4, company_in: CompanyProfileUpdate,):
     company = get_object_or_404(CompanyProfile, id=company_id)
     company.name = company_in.name
@@ -38,7 +38,7 @@ def update_company(request, company_id: UUID4, company_in: CompanyProfileUpdate,
     return company
 
 
-@company_router.post('/Image/', response={200: CompanyImage, 400: FourOFour})
+@company_router.post('/Image/', response={200: CompanyImage, 400: FourOFour}, auth=CompanyAuth())
 def upload_logo(request, company_id: UUID4, image: UploadedFile = File(...)):
     try:
         qs = CompanyProfile.objects.get(id=company_id)
