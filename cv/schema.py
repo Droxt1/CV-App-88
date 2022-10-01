@@ -48,7 +48,11 @@ class CompanyJobOut(Schema):
     name: str = None
     image: str = None
 
-
+class CompanySearchResult(Schema):
+    id: UUID4 = None
+    name: str = None
+    image: str = None
+    work_type: str = None
 class JobOut(Schema):
     id: UUID4 = None
     company: CompanyJobOut = None
