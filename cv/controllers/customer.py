@@ -1,7 +1,7 @@
 from ninja import Router, File
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from cv.Auth.Authorization import AuthBearer1
+from cv.Auth.Authorization import CustomerAuth
 from cv.models import *
 from typing import List
 from cv.schema import *

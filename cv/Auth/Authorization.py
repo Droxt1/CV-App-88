@@ -11,7 +11,7 @@ from core import settings
 from cv.models import Company, Customer, User
 
 
-class AuthBearer(HttpBearer, ABC):
+class CompanyAuth(HttpBearer, ABC):
     def authenticate(self, request: HttpRequest, token: str) -> Optional[Any]:
         try:
             payload = jwt.decode(
@@ -23,7 +23,7 @@ class AuthBearer(HttpBearer, ABC):
             return {'error': 'unauthorized'}
 
 
-class AuthBearer1(HttpBearer, ABC):
+class CustomerAuth(HttpBearer, ABC):
     def authenticate(self, request: HttpRequest, token: str) -> Optional[Any]:
         try:
             payload = jwt.decode(

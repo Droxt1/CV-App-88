@@ -1,7 +1,7 @@
 from ninja import Router, File
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from cv.Auth.Authorization import AuthBearer
+from cv.Auth.Authorization import CompanyAuth
 from cv.models import *
 from typing import List
 from cv.schema import *
@@ -22,7 +22,7 @@ def get_one_company(request, company_id: UUID4):
     return CompanyProfile.objects.get(id=company_id)
 
 
-@company_router.post('/search_company/{company_name}', response=List[CompanyJobOut])
+@company_router.post('/search_company/{company_name}', response=List[CompanySearchResult])
 def search_company(request, company_name: str):
     return CompanyProfile.objects.filter(name__icontains=company_name)
 
