@@ -1,11 +1,17 @@
-# CV-App-88
-Django\_ninja  
-auth  
-authentication
+## CV APP
 
-authorization  
-Django  
-rest\_framework  
-APIs  
-controllers  
-role\_based\_authentication\_system
+#### **Tools**:
+
+*   Django
+*   Django Ninja
+*   APIs
+*   Authorization
+*   Authentication
+*   Django Rest Framework  
+     
+
+#### **Logic Used:**
+
+*   Role Based Authentication System
+*   Token Based Authentication System
+*   Handling Different User Types
