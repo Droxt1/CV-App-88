@@ -108,3 +108,42 @@ def signup(request, payload: CompanyAuthIn):
 #     else:
 #         return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
 #         """
+"""
+@company_auth_router.post('/company_login', response={
+    200: CompanyAuthOut,
+    404: FourOFour,
+    500: FourOFour,
+    400: FourOFour,
+})
+def login(request, payload: CompanyLoginIn):
+    try:
+        company = Company.objects.get(email=payload.email)
+    except Company.DoesNotExist:
+        return status.HTTP_404_NOT_FOUND, {'error': 'email does not exist'}
+
+    try:
+
+        if company.password == payload.password:
+            token = create_company_token(company)
+            return 200, {
+                'token': token,
+                'company': company
+            }
+        else:
+            return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
+    except IntegrityError:
+        return status.HTTP_500_INTERNAL_SERVER_ERROR, {'error': 'internal server error, maybe email validation error'}
+    except ValidationError:
+        return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
+
+    """
+    if company:
+        token = create_company_token(company)
+        return status.HTTP_200_OK, {
+            'token': token,
+            'company': company
+        }
+    else:
+        return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
+        """
+"""
