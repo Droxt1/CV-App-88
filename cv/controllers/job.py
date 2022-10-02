@@ -1,5 +1,7 @@
 from ninja.pagination import RouterPaginated, PageNumberPagination, LimitOffsetPagination, paginate
 from django.shortcuts import get_object_or_404
+
+from cv.Auth.Authorization import CompanyAuth
 from cv.models import *
 from typing import List
 from cv.schema import *
@@ -43,7 +45,7 @@ def get_one_job(request, job_id: UUID4):
         return status.HTTP_404_NOT_FOUND, {'error': 'Job not found'}
 
 
-@job_router.delete('/{job_id}')
+@job_router.delete('/{job_id}',auth=CompanyAuth())
 def delete_job(request, job_id: UUID4):
     try:
         job = Job.objects.get(id=job_id)
@@ -53,7 +55,7 @@ def delete_job(request, job_id: UUID4):
     return {'message': 'job deleted successfully'}
 
 
-@job_router.delete('/')
+@job_router.delete('/',auth=CompanyAuth())
 def delete_all_jobs(request):
     Job.objects.all().delete()
     return {'message': 'all jobs deleted successfully'}
@@ -61,7 +63,7 @@ def delete_all_jobs(request):
 
 @job_router.post('/', response={
     201: JobCreationSchema,
-    400: FourOFour, })
+    400: FourOFour, }, auth=CompanyAuth())
 def create_job(request, job: JobCreationSchema):
     try:
         qs = Job.objects.create(**job.dict())
@@ -73,7 +75,7 @@ def create_job(request, job: JobCreationSchema):
 
 @job_router.put('/{job_id}', response={
     200: JobUpdateOut,
-    400: FourOFour, })
+    400: FourOFour, }, auth=CompanyAuth())
 def update_job(request, job_in: JobUpdateOut, job_id: UUID4):
     try:
         job = get_object_or_404(Job, id=job_id)
