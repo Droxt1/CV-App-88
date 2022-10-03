@@ -26,11 +26,6 @@ def signup(request, payload: CompanyAuthIn):
 
     if str(Company.objects.filter(phone=payload.phone).exists()) == 'True':
         return status.HTTP_400_BAD_REQUEST, {'error': 'email or phone number already exists'}
-        # method do not pass the email after the second post request
-        """def delete(self, request, *args, **kwargs):
-            instance = self.get_object()
-            self.perform_destroy(instance)
-            return Response(status=status.HTTP_204_NO_CONTENT)"""
     else:
         try:
             new_company = Company.objects.create(
@@ -48,6 +43,52 @@ def signup(request, payload: CompanyAuthIn):
             return status.HTTP_500_INTERNAL_SERVER_ERROR, {'error': 'internal server error, maybe email validation error'}
         except ValidationError:
             return status.HTTP_403_FORBIDDEN, {'error': 'something went wrong'}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         """
         Company.objects.filter(email=payload.email)
@@ -137,13 +178,13 @@ def login(request, payload: CompanyLoginIn):
         return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
 
     """
-    if company:
-        token = create_company_token(company)
-        return status.HTTP_200_OK, {
-            'token': token,
-            'company': company
-        }
-    else:
-        return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
-        """
-"""
+#     if company:
+#         token = create_company_token(company)
+#         return status.HTTP_200_OK, {
+#             'token': token,
+#             'company': company
+#         }
+#     else:
+#         return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
+#         """
+# """

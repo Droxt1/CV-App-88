@@ -17,88 +17,74 @@ sign_in_router = Router(tags=['global_sign_in'])
 @sign_in_router.post("/login",
                      response={
                          200: LoginOut,
-
                          404: FourOFour,
                          500: FourOFour,
                          400: FourOFour, })
-def login(request, payload: Login):
+def login(request, payload: LoginWithPhoneOrEmail):
     try:
-        company = Company.objects.get(email=payload.email)
-        if company.password == payload.password:
-            token = create_company_token(company)
-            return 200, {
-                'token': token,
-                'id': company.id,
-                'email': company.email,
-                'name': company.name,
-
-                
-            }
-        else:
-            return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
-    except Company.DoesNotExist:
         try:
-            customer = Customer.objects.get(email=payload.email)
-            if customer.password == payload.password:
-                token = create_customer_token(customer)
-                return 200, {
+            company_email = Company.objects.get(email=payload.email_or_phone)
+            if company_email.password == payload.password:
+                token = create_company_token(company_email)
+                return status.HTTP_200_OK, {
                     'token': token,
-                    'id': customer.id,
-                    'email': customer.email,
-                    'name': customer.name,
+                    'role': 'company',
+                    'id': company_email.id,
+                    'name': company_email.name,
+                    'email': company_email.email,
+                    'phone': company_email.phone,
                 }
             else:
                 return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
         except:
-            return status.HTTP_404_NOT_FOUND, {'error': 'email does not exist'}
-   
+            company_phone = Company.objects.get(phone=payload.email_or_phone)
+            if company_phone.password == payload.password:
+                token = create_company_token(company_phone)
+                return status.HTTP_200_OK, {
+                    'token': token,
+                    'role': 'company',
+                    'id': company_phone.id,
+                    'name': company_phone.name,
+                    'email': company_phone.email,
+                    'phone': company_phone.phone,
+                }
+            else:
+                return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
+    except Company.DoesNotExist:
+        try:
+            try:
+                customer_email = Customer.objects.get(email=payload.email_or_phone)
+                if customer_email.password == payload.password:
+                    token = create_customer_token(customer_email)
+                    return status.HTTP_200_OK, {
+                        'token': token,
+                        'role': 'customer',
+                        'id': customer_email.id,
+                        'name': customer_email.name,
+                        'email': customer_email.email,
+                        'phone': customer_email.phone,
+                    }
+                else:
+                    return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
+            except:
+                customer_phone = Customer.objects.get(phone=payload.email_or_phone)
+                if customer_phone.password == payload.password:
+                    token = create_customer_token(customer_phone)
+                    return status.HTTP_200_OK, {
+                        'token': token,
+                        'role': 'customer',
+                        'id': customer_phone.id,
+                        'name': customer_phone.name,
+                        'email': customer_phone.email,
+                        'phone': customer_phone.phone,
+                    }
+                else:
+                    return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
+        except Customer.DoesNotExist:
+            return status.HTTP_404_NOT_FOUND, {'error': 'email or phone number does not exist'}
+        except IntegrityError:
+            return status.HTTP_500_INTERNAL_SERVER_ERROR, {'error': 'internal server error, maybe email validation error'}
+        except ValidationError:
+            return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
 
-    # checking if the password is correct for both company and customer at the same time
-    # try:
-    #     try: company.password == payload.password:
-    #         token = create_company_token(company)
-    #         return 200, {
-    #             'token': token,
-    #             'company': company
-    #         }
-    #     except: customer.password == payload.password:
-    #         token = create_company_token(customer)
-    #         return 200, {
-    #             'token': token,
-    #             'customer': customer
-    #         }
-    # except IntegrityError:
-    #     return status.HTTP_500_INTERNAL_SERVER_ERROR, {'error': 'internal server error, maybe email validation error'}
-    # except:
-    #         return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
-    # except IntegrityError:
-    #     return status.HTTP_500_INTERNAL_SERVER_ERROR, {'error': 'internal server error, maybe email validation error'}
-    # except ValidationError:
-    #     return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
 
-    # try:
-    #     if company.password == payloadCO.password:
-    #         token = create_company_token(company)
-    #         return 200, {
-    #             'token': token,
-    #             'company': company
-    #         }
-    #     else:
-    #         return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
-    # except IntegrityError:
-    #     return status.HTTP_500_INTERNAL_SERVER_ERROR, {'error': 'internal server error, maybe email validation error'}
-    # except ValidationError:
-    #     return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
-    # try:
-    #     if customer.password == payloadCU.password:
-    #         token = create_customer_token(customer)
-    #         return 200, {
-    #             'token': token,
-    #             'customer': customer
-    #         }
-    #     else:
-    #         return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
-    # except IntegrityError:
-    #     return status.HTTP_500_INTERNAL_SERVER_ERROR, {'error': 'internal server error, maybe email validation error'}
-    # except ValidationError:
-    #     return status.HTTP_400_BAD_REQUEST, {'error': 'password is incorrect'}
