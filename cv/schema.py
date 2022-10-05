@@ -1,7 +1,7 @@
 from datetime import datetime, date
 from ninja import Schema, ModelSchema
 from pydantic import UUID4
-from typing import List
+from typing import List, Optional
 from cv.models import *
 from datetime import datetime
 
@@ -223,14 +223,14 @@ class CustomerProfileUpdateIn(Schema):
 
 class JobSchema(Schema):
     id: UUID4 = None
-    company: CompanyJobOut = None
+    company: Optional[CompanyOut]
     created = datetime.now() 
-    position: str = None
+    position: Optional[str]
     employment_type: str = None
     description: str = None
     location: str = None
     workplace: str = None
-    is_featured: bool = None
+    is_featured: Optional[bool]
    
 
 

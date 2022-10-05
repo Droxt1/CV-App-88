@@ -250,7 +250,7 @@ class Job(Profile):
     employment_type = models.CharField(
         choices=EmploymentType.choices, max_length=30, blank=True, null=True)
     description = models.TextField(null=True, blank=True)
-    is_featured = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
         return self.position
