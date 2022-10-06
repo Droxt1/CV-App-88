@@ -1,13 +1,11 @@
-from ninja.pagination import RouterPaginated, PageNumberPagination, LimitOffsetPagination, paginate
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from ninja.pagination import RouterPaginated, paginate
+from rest_framework import status
 
 from cv.Auth.Authorization import CompanyAuth
-from cv.models import *
-from typing import List, Optional
+from cv.models import Job
 from cv.schema import *
-from cv.data import *
-from rest_framework import status
-from django.db.models import Q
 
 job_router = RouterPaginated(tags=['Jobs'])
 
@@ -22,7 +20,7 @@ def get_all_jobs(request, is_featured: bool = None, position: str = None, compan
         if is_featured is not None:
             q &= Q(is_featured=is_featured)
         if position:
-            q &= Q(position=position)
+            q &= Q(position__iexact=position)
         if company_id:
             q &= Q(company_id=company_id)
 

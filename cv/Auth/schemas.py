@@ -51,14 +51,7 @@ class CustomerAuthOut(Schema):
     customer: CustomerOut
 
 
-# class CompanyLoginIn(Schema):
-#     email: EmailStr
-#     password: str = Field(..., example='password', min_length=8, max_length=32)
 
-
-# class CustomerLoginIn(Schema):
-#     email: EmailStr
-#     password: str = Field(..., example='password', min_length=8, max_length=32)
 
 class Login(Schema):
     email: EmailStr
@@ -74,7 +67,7 @@ class LoginOut(Schema):
     phone: str
 
 
-# login with email or phone number
+
 class LoginWithPhoneOrEmail(Schema):
     email_or_phone: str
 

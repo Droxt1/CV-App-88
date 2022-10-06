@@ -1,15 +1,9 @@
-from email.mime import application
-from ninja import Router, File
+from ninja import Router
 from ninja.pagination import paginate
-from django.shortcuts import get_object_or_404
 
 from cv.Auth.Authorization import CompanyAuth
-from cv.models import *
-from typing import List
+from cv.models import JobApplication
 from cv.schema import *
-from ninja.files import UploadedFile
-from cv.data import *
-
 
 application_router = Router(tags=['application'])
 

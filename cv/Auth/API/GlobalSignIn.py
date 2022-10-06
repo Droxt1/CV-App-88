@@ -1,11 +1,7 @@
-# build a global sign in page for both company and customer
-import re
 from django.db import IntegrityError
+from ninja import Router
 from ninja.errors import ValidationError
 from rest_framework import status
-from cv.models import Customer, Company
-from cv.schema import FourOFour
-from ninja import Router
 from cv.Auth.Authorization import create_company_token, create_customer_token
 from cv.Auth.schemas import *
 from cv.models import Customer, Company

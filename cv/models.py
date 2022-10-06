@@ -1,12 +1,14 @@
 import uuid as uuid
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
+from multiselectfield import MultiSelectField
 from cv.data.cities import JobLocation
+from cv.data.industry import Industry
 from cv.data.job_titles import JobTitle
+from cv.data.langs import Language
 from cv.data.skills import Skills
 
 
@@ -25,11 +27,6 @@ class WorkplaceType(models.TextChoices):
     ON_SITE = 'ON SITE', 'on site'
     REMOTE = 'REMOTE', 'Remote'
     HYBRID = 'HYBRID', 'Hybrid',
-
-
-Language = (('Arabic', 'Arabic'),
-            ('English', 'English'),
-            ('Kurdish', 'Kurdish'),)
 
 
 class CompanyType(models.TextChoices):
@@ -212,7 +209,7 @@ class CompanyProfile(Profile):
         max_length=32, blank=True, null=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    work_type = models.CharField(choices=CompanyType.choices, max_length=100)
+    work_type = models.CharField(choices=Industry, max_length=100)
     country = models.CharField(
         max_length=50, null=True, blank=True, default='Iraq')
     city = models.CharField(choices=JobLocation, max_length=20)
@@ -260,7 +257,7 @@ class CustomerProfile(Profile):
     user = models.OneToOneField(
         Customer, on_delete=models.CASCADE, related_name='customer_profile')
     phone = models.CharField(null=True, blank=True, max_length=20, unique=True)
-    password = models.CharField(null=True, blank=True,max_length=32)
+    password = models.CharField(null=True, blank=True, max_length=32)
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)

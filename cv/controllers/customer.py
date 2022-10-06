@@ -1,15 +1,12 @@
-from django.db import IntegrityError
-from ninja import Router, File
 from django.shortcuts import get_object_or_404
-from pydantic import ValidationError
-from rest_framework import status
-from cv.Auth.Authorization import CustomerAuth
-from cv.models import *
-from typing import List
-from cv.schema import *
+from ninja import Router, File
 from ninja.files import UploadedFile
-from cv.data import *
 from ninja.pagination import paginate
+from rest_framework import status
+
+from cv.Auth.Authorization import CustomerAuth
+from cv.models import CustomerProfile, Job, JobApplication, WorkExperience, Education
+from cv.schema import *
 
 customer_router = Router(tags=['customer'])
 
