@@ -12,6 +12,11 @@ from cv.data.langs import Language
 from cv.data.skills import Skills
 
 
+class CompanyStatus(models.TextChoices):
+    PENDING = 'PENDING', 'pending'
+    APPROVED = 'APPROVED', 'approved'
+
+
 class Category(models.TextChoices):
     LONG_LIST = 'LONG_LIST', 'Long List'
     SHORT_LIST = 'SHORT LIST', 'Short List'
@@ -94,6 +99,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     role = models.CharField(
         max_length=50, choices=Role.choices, default=base_role, editable=False)
+    status = models.CharField(max_length=50, choices=CompanyStatus.choices, default=CompanyStatus.PENDING)
     name = models.CharField(max_length=50, blank=True,
                             null=True, default='Name')
     email = models.EmailField(
@@ -138,7 +144,6 @@ class CustomerManager(BaseUserManager):
 
 
 class Customer(User):
-
     phone = models.CharField(max_length=50, blank=True,
                              null=True, default='Phone')
 
@@ -180,6 +185,7 @@ class Company(User):
     country = models.CharField(
         max_length=50, null=True, blank=True, default='Iraq')
 
+
     base_role = User.Role.COMPANY
     Company = CompanyManger()
 
@@ -193,12 +199,23 @@ class Profile(models.Model):
 
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    created = models.DateTimeField(editable=False, auto_now_add=True)
-    updated = models.DateTimeField(editable=False, auto_now=True)
+    created_at = models.DateTimeField(editable=False, auto_now_add=True)
+    updated_at = models.DateTimeField(editable=False, auto_now=True)
     is_active = models.BooleanField(default=True)
 
 
-class CompanyProfile(Profile):
+class Entity(models.Model):
+    class Meta:
+        abstract = True
+
+    created_at = models.DateTimeField(editable=False, auto_now_add=True)
+    updated_at = models.DateTimeField(editable=False, auto_now=True)
+    is_active = models.BooleanField(default=True)
+
+
+class CompanyProfile(Entity):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(
         Company, on_delete=models.CASCADE, related_name='company_profile')
     phone = models.CharField(max_length=50, blank=True,
@@ -225,12 +242,13 @@ class CompanyProfile(Profile):
 def create_user_profile(sender, instance, created, **kwargs):
     try:
         CompanyProfile.objects.get(user=instance, name=instance.name, email=instance.email, country=instance.country,
-                                   phone=instance.phone, password=instance.password, address=instance.address)
+                                   phone=instance.phone, password=instance.password, address=instance.address,
+                                   id=instance.id, )
     except CompanyProfile.DoesNotExist:
         if created and instance.role == "COMPANY":
             CompanyProfile.objects.create(user=instance, name=instance.name, email=instance.email,
                                           country=instance.country, phone=instance.phone, password=instance.password,
-                                          address=instance.address)
+                                          address=instance.address, id=instance.id, )
         else:
             instance.company_profile.save()
 
@@ -253,7 +271,9 @@ class Job(Profile):
         return self.position
 
 
-class CustomerProfile(Profile):
+class CustomerProfile(Entity):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(
         Customer, on_delete=models.CASCADE, related_name='customer_profile')
     phone = models.CharField(null=True, blank=True, max_length=20, unique=True)
@@ -279,11 +299,11 @@ class CustomerProfile(Profile):
 def create_user_profile(sender, instance, created, **kwargs):
     try:
         CustomerProfile.objects.get(
-            user=instance, phone=instance.phone, name=instance.name)
+            user=instance, phone=instance.phone, name=instance.name, id=instance.id)
     except CustomerProfile.DoesNotExist:
         if created and instance.role == "CUSTOMER":
             CustomerProfile.objects.create(
-                user=instance, phone=instance.phone, name=instance.name)
+                user=instance, phone=instance.phone, name=instance.name, id=instance.id)
         else:
             if instance.role == "CUSTOMER":
                 instance.customer_profile.save()

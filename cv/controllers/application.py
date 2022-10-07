@@ -11,7 +11,7 @@ application_router = Router(tags=['application'])
 @application_router.get('/', response=List[JobApplicationOut], auth=CompanyAuth())
 @paginate
 def get_all_jobs_applications(request):
-    return JobApplication.objects.all().order_by('-created')
+    return JobApplication.objects.all().order_by('-created_at')
 
 
 @application_router.get('/{job_application_id}', response=JobApplicationOut, auth=CompanyAuth())

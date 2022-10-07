@@ -50,23 +50,6 @@ def update_customer(request, customer_id: UUID4, customer_in: CustomerProfileUpd
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
 
 
-@customer_router.post('/{customer_id}/{job_id}', response={
-    400: FourOFour,
-    404: FourOFour,
-}, auth=CustomerAuth())
-def save_job(request, customer_id: UUID4, job_id: UUID4, ):
-    try:
-        job = Job.objects.get(id=job_id)
-        customer = CustomerProfile.objects.get(id=customer_id)
-        return customer.saved_job.add(job)
-    except CustomerProfile.DoesNotExist:
-        return status.HTTP_404_NOT_FOUND, {'error': 'customer not found'}
-    except Job.DoesNotExist:
-        return status.HTTP_404_NOT_FOUND, {'error': 'job not found'}
-    except:
-        return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
-
-
 @customer_router.delete('/{customer_id}/{job_id}', response={
     400: FourOFour,
     404: FourOFour,
@@ -83,20 +66,37 @@ def delete_saved_job(request, customer_id: UUID4, job_id: UUID4):
     except:
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
 
+# @customer_router.post('/{customer_id}/{job_id}', response={
+#     400: FourOFour,
+#     404: FourOFour,
+# }, auth=CustomerAuth())
+# def save_job(request, customer_id: UUID4, job_id: UUID4, ):
+#     try:
+#         job = Job.objects.get(id=job_id)
+#         customer = CustomerProfile.objects.get(id=customer_id)
+#         return customer.saved_job.add(job)
+#     except CustomerProfile.DoesNotExist:
+#         return status.HTTP_404_NOT_FOUND, {'error': 'customer not found'}
+#     except Job.DoesNotExist:
+#         return status.HTTP_404_NOT_FOUND, {'error': 'job not found'}
+#     except:
+#         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
 
-@customer_router.post('/get_all_ saved_jobs/',
-                      response={200: List[JobOut], 204: FourOFour, 404: FourOFour, 400: FourOFour}, auth=CustomerAuth())
-@paginate
-def get_all_saved_jobs(request, customer_id: UUID4):
-    try:
-        customer = CustomerProfile.objects.get(id=customer_id)
-        return customer.saved_job.all()
-    except CustomerProfile.saved_job.isnull():
-        return status.HTTP_204_NO_CONTENT, {'error': 'Customer Has No Saved Jobs'}
-    except CustomerProfile.DoesNotExist:
-        return status.HTTP_404_NOT_FOUND, {'error': 'customer not found'}
-    except:
-        return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
+
+
+# @customer_router.post('/get_all_ saved_jobs/',
+#                       response={200: List[JobOut], 204: FourOFour, 404: FourOFour, 400: FourOFour}, auth=CustomerAuth())
+# @paginate
+# def get_all_saved_jobs(request, customer_id: UUID4):
+#     try:
+#         customer = CustomerProfile.objects.get(id=customer_id)
+#         return customer.saved_job.all()
+#     except CustomerProfile.saved_job.isnull():
+#         return status.HTTP_204_NO_CONTENT, {'error': 'Customer Has No Saved Jobs'}
+#     except CustomerProfile.DoesNotExist:
+#         return status.HTTP_404_NOT_FOUND, {'error': 'customer not found'}
+#     except:
+#         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
 
 
 @customer_router.post('/Aplly/', response={200: JobApplicationOut, 400: FourOFour, 404: FourOFour}, auth=CustomerAuth())
@@ -231,3 +231,5 @@ def upload_cv(request, payload: CustomerId, cv: UploadedFile = File(...)):
             return status.HTTP_400_BAD_REQUEST, {'error': 'File type not supported'}
     except:
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
+
+

@@ -240,7 +240,7 @@ class CustomerProfileUpdateIn(Schema):
 
 class JobSchema(Schema):
     id: UUID4 = None
-    company: Optional[CompanyOut]
+    company: Optional[CompanyJobOut]
     created = datetime.now()
     position: Optional[str]
     employment_type: str = None
@@ -356,3 +356,9 @@ class WKID(Schema):
 
 class EDID(Schema):
     education_id: UUID4
+
+
+class JobId(Schema):
+    job_id: UUID4
+
+

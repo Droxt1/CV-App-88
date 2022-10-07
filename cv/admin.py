@@ -36,13 +36,13 @@ class EducationAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         
-        'created',
-        'updated',
+        'created_at',
+        'updated_at',
         'customer',
         'degree',
         'school', 
     )
-    list_filter = ('created', 'updated', 'customer')
+    list_filter = ('created_at', 'updated_at', 'customer')
 
 
 @admin.register(CompanyProfile)
@@ -50,15 +50,15 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         
-        'created',
-        'updated',
+        'created_at',
+        'updated_at',
         'name',
         'description',
         'work_type',
         'city',
         'address', 'image')
     
-    list_filter = ('created', 'updated')
+    list_filter = ('created_at', 'updated_at')
 
 
 
@@ -68,13 +68,13 @@ class WorkExperienceAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         
-        'created',
-        'updated',
+        'created_at',
+        'updated_at',
         'customer',
         'title',
         'company_worked_for', 
     )
-    list_filter = ('created', 'updated', 'customer')
+    list_filter = ('created_at', 'updated_at', 'customer')
 
 
 
@@ -84,8 +84,8 @@ class CustomerProfileAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         
-        'created',
-        'updated',
+        'created_at',
+        'updated_at',
         'name',
         'description',
         'address',
@@ -93,7 +93,7 @@ class CustomerProfileAdmin(admin.ModelAdmin):
         'language',
         'job_title',  'cv')
     
-    list_filter = ('created', 'updated')
+    list_filter = ('created_at', 'updated_at')
 
     
 
@@ -102,8 +102,8 @@ class JobAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         
-        'created',
-        'updated',
+        'created_at',
+        'updated_at',
         'company',
         'position',
         'workplace',
@@ -111,7 +111,7 @@ class JobAdmin(admin.ModelAdmin):
         'employment_type',
         'description',
     )
-    list_filter = ('created', 'updated', 'company')
+    list_filter = ('created_at', 'updated_at', 'company')
 
 
 
@@ -120,10 +120,10 @@ class JobApplicationAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         
-        'created',
-        'updated',
+        'created_at',
+        'updated_at',
         'customer',
         'job',
         'category',
     )
-    list_filter = ('created', 'updated', 'customer', 'job')
+    list_filter = ('created_at', 'updated_at', 'customer', 'job')

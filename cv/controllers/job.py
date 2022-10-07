@@ -65,7 +65,7 @@ def delete_all_jobs(request):
 def create_job(request, job: JobCreationSchema):
     try:
         qs = Job.objects.create(**job.dict())
-        print("created")
+        print("created_at")
         return status.HTTP_201_CREATED, qs
     except:
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
