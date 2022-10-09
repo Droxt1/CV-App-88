@@ -99,7 +99,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     role = models.CharField(
         max_length=50, choices=Role.choices, default=base_role, editable=False)
-    status = models.CharField(max_length=50, choices=CompanyStatus.choices, default=CompanyStatus.PENDING)
+
     name = models.CharField(max_length=50, blank=True,
                             null=True, default='Name')
     email = models.EmailField(
@@ -146,7 +146,7 @@ class CustomerManager(BaseUserManager):
 class Customer(User):
     phone = models.CharField(max_length=50, blank=True,
                              null=True, default='Phone')
-
+    status = models.CharField(max_length=50, choices=CompanyStatus.choices, default=CompanyStatus.APPROVED)
     base_role = User.Role.CUSTOMER
 
     Customer = CustomerManager()
@@ -180,6 +180,8 @@ class CompanyManger(BaseUserManager):
 class Company(User):
     phone = models.CharField(max_length=50, blank=True,
                              null=True, default='Phone')
+    status = models.CharField(max_length=50, choices=CompanyStatus.choices, default=CompanyStatus.PENDING)
+
     address = models.CharField(
         max_length=50, blank=True, null=True, default='Address')
     country = models.CharField(

@@ -27,14 +27,14 @@ SECRET_KEY = 'django-insecure-6ee(73w__(bx!7c6swwf$le#w)g25)q(6*s$1%%!&saghod00o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['kasmtj.pythonanywhere.com', '127.0.0.1']
 
 # AUTH_USER_MODEL = 'cv.User'
 
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    # 'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -143,18 +143,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'cv.User'
 
 
-# jazzmen dark theme
-JAZZMIN_SETTINGS = {
-    # title of the window
-    'site_title': 'CV APP',
-
-    # Title on the login screen
-    'site_header': 'CV APP',
-
-    # Welcome text on the login screen
-    'welcome_sign': 'Welcome to CV APP',
-
-    # Title on the brand, and the login screen (19 chars max)
-    'site_title_short': 'CV APP',
-
-}
+# # jazzmen dark theme
+# JAZZMIN_SETTINGS = {
+#     # title of the window
+#     'site_title': 'CV APP',
+#
+#     # Title on the login screen
+#     'site_header': 'CV APP',
+#
+#     # Welcome text on the login screen
+#     'welcome_sign': 'Welcome to CV APP',
+#
+#     # Title on the brand, and the login screen (19 chars max)
+#     'site_title_short': 'CV APP',
+#
+# }
