@@ -27,7 +27,7 @@ def login(request, payload: LoginWithPhoneOrEmail):
 
 
                 if company_email.status == CompanyStatus.PENDING:
-                    return status.HTTP_400_BAD_REQUEST, {'error': 'company status is pending'}
+                    return status.HTTP_400_BAD_REQUEST, {'error': 'Company is not approved yet, please wait for approval'}
 
 
 
@@ -38,6 +38,7 @@ def login(request, payload: LoginWithPhoneOrEmail):
                     return status.HTTP_200_OK, {
                         'token': token,
                         'role': 'company',
+                        'status': company_email.status,
                         'id': company_email.id,
                         'name': company_email.name,
                         'email': company_email.email,
@@ -49,13 +50,14 @@ def login(request, payload: LoginWithPhoneOrEmail):
             company_phone = Company.objects.get(phone=payload.email_or_phone)
             if company_phone.password == payload.password:
                 if company_phone.status == CompanyStatus.PENDING:
-                    return status.HTTP_400_BAD_REQUEST, {'error': 'company is not verified'}
+                    return status.HTTP_400_BAD_REQUEST, {'error': 'Company is not approved yet, please wait for approval'}
 
                 else:
                     token = create_company_token(company_phone)
                     return status.HTTP_200_OK, {
                         'token': token,
                         'role': 'company',
+                        'status': company_phone.status,
                         'id': company_phone.id,
                         'name': company_phone.name,
                         'email': company_phone.email,
@@ -69,12 +71,13 @@ def login(request, payload: LoginWithPhoneOrEmail):
                 customer_email = Customer.objects.get(email=payload.email_or_phone)
                 if customer_email.password == payload.password:
                     if customer_email.status == CompanyStatus.PENDING:
-                        return status.HTTP_400_BAD_REQUEST, {'error': 'customer is not verified'}
+                        return status.HTTP_400_BAD_REQUEST, {'error': 'Customer is not approved yet, please wait for approval'}
                     else:
                         token = create_customer_token(customer_email)
                         return status.HTTP_200_OK, {
                             'token': token,
                             'role': 'customer',
+                            'status': customer_email.status,
                             'id': customer_email.id,
                             'name': customer_email.name,
                             'email': customer_email.email,
@@ -86,12 +89,13 @@ def login(request, payload: LoginWithPhoneOrEmail):
                 customer_phone = Customer.objects.get(phone=payload.email_or_phone)
                 if customer_phone.password == payload.password:
                     if customer_phone.status == CompanyStatus.PENDING:
-                        return status.HTTP_400_BAD_REQUEST, {'error': 'customer is not verified'}
+                        return status.HTTP_400_BAD_REQUEST, {'error': 'Customer is not approved yet, please wait for approval'}
                     else:
                         token = create_customer_token(customer_phone)
                         return status.HTTP_200_OK, {
                             'token': token,
                             'role': 'customer',
+                            'status': customer_phone.status,
                             'id': customer_phone.id,
                             'name': customer_phone.name,
                             'email': customer_phone.email,

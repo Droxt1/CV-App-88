@@ -61,6 +61,7 @@ class Login(Schema):
 class LoginOut(Schema):
     token: TokenOut
     role: str
+    status: str
     id: UUID4
     name: str
     email: EmailStr
