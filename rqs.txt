@@ -8,7 +8,6 @@ cryptography==38.0.1
 distlib==0.3.5
 Django==4.1.1
 django-extensions==3.2.1
-django-jazzmin==2.5.0
 django-js-asset==2.0.0
 django-mptt==0.13.4
 django-multiselectfield==0.1.12
