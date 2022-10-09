@@ -1,13 +1,20 @@
 import uuid as uuid
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-from multiselectfield import MultiSelectField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
+from multiselectfield import MultiSelectField
 from cv.data.cities import JobLocation
+from cv.data.industry import Industry
 from cv.data.job_titles import JobTitle
+from cv.data.langs import Language
 from cv.data.skills import Skills
+
+
+class CompanyStatus(models.TextChoices):
+    PENDING = 'PENDING', 'pending'
+    APPROVED = 'APPROVED', 'approved'
 
 
 class Category(models.TextChoices):
@@ -25,11 +32,6 @@ class WorkplaceType(models.TextChoices):
     ON_SITE = 'ON SITE', 'on site'
     REMOTE = 'REMOTE', 'Remote'
     HYBRID = 'HYBRID', 'Hybrid',
-
-
-Language = (('Arabic', 'Arabic'),
-            ('English', 'English'),
-            ('Kurdish', 'Kurdish'),)
 
 
 class CompanyType(models.TextChoices):
@@ -89,14 +91,15 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     class Role(models.TextChoices):
-        COMPANY = 'COMPANY', 'Company'
-        CUSTOMER = 'CUSTOMER', 'Customer'
-        ADMIN = 'admin', 'Admin'
+        COMPANY = 'COMPANY', 'COMPANY'
+        CUSTOMER = 'CUSTOMER', 'CUSTOMER'
+        ADMIN = 'ADMIN', 'ADMIN'
 
     base_role = Role.ADMIN
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     role = models.CharField(
         max_length=50, choices=Role.choices, default=base_role, editable=False)
+    status = models.CharField(max_length=50, choices=CompanyStatus.choices, default=CompanyStatus.PENDING)
     name = models.CharField(max_length=50, blank=True,
                             null=True, default='Name')
     email = models.EmailField(
@@ -141,7 +144,6 @@ class CustomerManager(BaseUserManager):
 
 
 class Customer(User):
-
     phone = models.CharField(max_length=50, blank=True,
                              null=True, default='Phone')
 
@@ -183,6 +185,7 @@ class Company(User):
     country = models.CharField(
         max_length=50, null=True, blank=True, default='Iraq')
 
+
     base_role = User.Role.COMPANY
     Company = CompanyManger()
 
@@ -196,12 +199,23 @@ class Profile(models.Model):
 
     id = models.UUIDField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    created = models.DateTimeField(editable=False, auto_now_add=True)
-    updated = models.DateTimeField(editable=False, auto_now=True)
+    created_at = models.DateTimeField(editable=False, auto_now_add=True)
+    updated_at = models.DateTimeField(editable=False, auto_now=True)
     is_active = models.BooleanField(default=True)
 
 
-class CompanyProfile(Profile):
+class Entity(models.Model):
+    class Meta:
+        abstract = True
+
+    created_at = models.DateTimeField(editable=False, auto_now_add=True)
+    updated_at = models.DateTimeField(editable=False, auto_now=True)
+    is_active = models.BooleanField(default=True)
+
+
+class CompanyProfile(Entity):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(
         Company, on_delete=models.CASCADE, related_name='company_profile')
     phone = models.CharField(max_length=50, blank=True,
@@ -212,7 +226,7 @@ class CompanyProfile(Profile):
         max_length=32, blank=True, null=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    work_type = models.CharField(choices=CompanyType.choices, max_length=100)
+    work_type = models.CharField(choices=Industry, max_length=100)
     country = models.CharField(
         max_length=50, null=True, blank=True, default='Iraq')
     city = models.CharField(choices=JobLocation, max_length=20)
@@ -228,12 +242,13 @@ class CompanyProfile(Profile):
 def create_user_profile(sender, instance, created, **kwargs):
     try:
         CompanyProfile.objects.get(user=instance, name=instance.name, email=instance.email, country=instance.country,
-                                   phone=instance.phone, password=instance.password, address=instance.address)
+                                   phone=instance.phone, password=instance.password, address=instance.address,
+                                   id=instance.id, )
     except CompanyProfile.DoesNotExist:
         if created and instance.role == "COMPANY":
             CompanyProfile.objects.create(user=instance, name=instance.name, email=instance.email,
                                           country=instance.country, phone=instance.phone, password=instance.password,
-                                          address=instance.address)
+                                          address=instance.address, id=instance.id, )
         else:
             instance.company_profile.save()
 
@@ -250,17 +265,19 @@ class Job(Profile):
     employment_type = models.CharField(
         choices=EmploymentType.choices, max_length=30, blank=True, null=True)
     description = models.TextField(null=True, blank=True)
-    is_featured = models.BooleanField(default=False)
+    is_featured = models.BooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
         return self.position
 
 
-class CustomerProfile(Profile):
+class CustomerProfile(Entity):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(
         Customer, on_delete=models.CASCADE, related_name='customer_profile')
     phone = models.CharField(null=True, blank=True, max_length=20, unique=True)
-    password = models.CharField(null=True, blank=True,max_length=32)
+    password = models.CharField(null=True, blank=True, max_length=32)
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
@@ -273,7 +290,6 @@ class CustomerProfile(Profile):
     cv = models.FileField(upload_to='CV/', null=True,
                           blank=True, default='default.pdf')
     saved_job = models.ManyToManyField(Job, related_name='job', blank=True)
-
     def __str__(self):
         return self.name
 
@@ -282,11 +298,11 @@ class CustomerProfile(Profile):
 def create_user_profile(sender, instance, created, **kwargs):
     try:
         CustomerProfile.objects.get(
-            user=instance, phone=instance.phone, name=instance.name)
+            user=instance, phone=instance.phone, name=instance.name, id=instance.id)
     except CustomerProfile.DoesNotExist:
         if created and instance.role == "CUSTOMER":
             CustomerProfile.objects.create(
-                user=instance, phone=instance.phone, name=instance.name)
+                user=instance, phone=instance.phone, name=instance.name, id=instance.id)
         else:
             if instance.role == "CUSTOMER":
                 instance.customer_profile.save()

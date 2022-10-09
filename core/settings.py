@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.template.context_processors import static
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -32,7 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,9 +45,7 @@ INSTALLED_APPS = [
     'multiselectfield',
     'mptt',
     'django_extensions',
-    'django_rest_passwordreset',
     'rest_framework',
-    'rest_framework.authtoken',
     'rest_auth',
     'rest_auth.registration',
 
@@ -128,8 +128,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = '/media/'
 MEDIA_URL = '/media/'
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 STATICFILES_DIR = (
     os.path.join(BASE_DIR, 'static'),
 )
@@ -140,3 +141,20 @@ STATICFILES_DIR = (
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'cv.User'
+
+
+# jazzmen dark theme
+JAZZMIN_SETTINGS = {
+    # title of the window
+    'site_title': 'CV APP',
+
+    # Title on the login screen
+    'site_header': 'CV APP',
+
+    # Welcome text on the login screen
+    'welcome_sign': 'Welcome to CV APP',
+
+    # Title on the brand, and the login screen (19 chars max)
+    'site_title_short': 'CV APP',
+
+}

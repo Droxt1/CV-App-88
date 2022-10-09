@@ -1,16 +1,22 @@
-from datetime import datetime, date
-from ninja import Schema, ModelSchema
-from pydantic import UUID4
-from typing import List
-from cv.models import *
+from datetime import date
 from datetime import datetime
+from typing import List, Optional
+from ninja import Schema
+from pydantic import UUID4
 
 
 class FourOFour(Schema):
     error: str
 
+
 class two00_OK(Schema):
     message: str
+
+class savedOK(Schema):
+    message: str
+    saved: bool
+
+
 class CompanyJOBOut(Schema):
     id: UUID4
     position: str = None
@@ -48,11 +54,18 @@ class CompanyJobOut(Schema):
     name: str = None
     image: str = None
 
+
 class CompanySearchResult(Schema):
     id: UUID4 = None
     name: str = None
     image: str = None
     work_type: str = None
+
+
+class CompanySearchResultIn(Schema):
+    name: str = None
+
+
 class JobOut(Schema):
     id: UUID4 = None
     company: CompanyJobOut = None
@@ -142,6 +155,14 @@ class CityOut(Schema):
     city: str
 
 
+class IndustryOut(Schema):
+    industry: str
+
+
+class LanguageOut(Schema):
+    language: str
+
+
 class CustomerProfileUpdate(Schema):
     name: str = None
     phone: str = None
@@ -223,15 +244,15 @@ class CustomerProfileUpdateIn(Schema):
 
 class JobSchema(Schema):
     id: UUID4 = None
-    company: CompanyJobOut = None
-    created = datetime.now() 
-    position: str = None
+    company: Optional[CompanyJobOut]
+    created_at = datetime.now()
+    position: Optional[str]
     employment_type: str = None
     description: str = None
     location: str = None
     workplace: str = None
-    is_featured: bool = None
-   
+    is_featured: Optional[bool]
+
 
 
 class JobSchemaOut(Schema):
@@ -288,7 +309,6 @@ class JobApplicationOut(Schema):
     customer: CustomerApplyiedJobs = None
     job: JobApplied = None
     why_apply: str = None
-    
 
 
 class JobApplicationIn(Schema):
@@ -341,3 +361,9 @@ class WKID(Schema):
 
 class EDID(Schema):
     education_id: UUID4
+
+
+class JobId(Schema):
+    job_id: UUID4
+
+

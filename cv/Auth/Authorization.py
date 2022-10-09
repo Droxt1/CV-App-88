@@ -1,12 +1,8 @@
 from abc import ABC
 from typing import Optional, Any
-
-from pydantic import ValidationError
-from cv.Errors import errors
 from django.http import HttpRequest
 from jose import jwt, JWTError
 from ninja.security import HttpBearer
-
 from core import settings
 from cv.models import Company, Customer, User
 

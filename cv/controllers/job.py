@@ -1,37 +1,35 @@
-from ninja.pagination import RouterPaginated, PageNumberPagination, LimitOffsetPagination, paginate
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from ninja.pagination import RouterPaginated, paginate
+from rest_framework import status
 
 from cv.Auth.Authorization import CompanyAuth
-from cv.models import *
-from typing import List
+from cv.models import Job
 from cv.schema import *
-from cv.data import *
-from rest_framework import status
 
 job_router = RouterPaginated(tags=['Jobs'])
 
 
 @job_router.get('/', response={200: List[JobSchema], 400: FourOFour})
 @paginate
-def get_all_jobs(request):
+def get_all_jobs(request, is_featured: bool = None, position: str = None, company_id: UUID4 = None, ):
     try:
-        jobs = Job.objects.all().order_by('-created')
-        return jobs
+
+        # multi filtering with Q
+        q = Q()
+        if is_featured is not None:
+            q &= Q(is_featured=is_featured)
+        if position:
+            q &= Q(position__iexact=position)
+        if company_id:
+            q &= Q(company_id=company_id)
+
+        return Job.objects.filter(q).order_by('-created_at')
+
+
+
     except:
-        return {'error': 'something went wrong'}, status.HTTP_400_BAD_REQUEST
-
-
-@job_router.get('/featured_jobs_path_params', response={
-    200: List[JobSchema],
-    404: FourOFour,
-
-})
-def get_featured_jobs(request):
-    try:
-        jobs = Job.objects.filter(is_featured=True).order_by("-created").all()
-        return status.HTTP_200_OK, jobs
-    except Job.DoesNotExist:
-        return status.HTTP_404_NOT_FOUND, {'error': 'no featured jobs found'}
+        return {'error': 'something went wrong'}
 
 
 @job_router.get('/{job_id}', response={
@@ -45,7 +43,7 @@ def get_one_job(request, job_id: UUID4):
         return status.HTTP_404_NOT_FOUND, {'error': 'Job not found'}
 
 
-@job_router.delete('/{job_id}',auth=CompanyAuth())
+@job_router.delete('/{job_id}', auth=CompanyAuth())
 def delete_job(request, job_id: UUID4):
     try:
         job = Job.objects.get(id=job_id)
@@ -55,7 +53,7 @@ def delete_job(request, job_id: UUID4):
     return {'message': 'job deleted successfully'}
 
 
-@job_router.delete('/',auth=CompanyAuth())
+@job_router.delete('/', auth=CompanyAuth())
 def delete_all_jobs(request):
     Job.objects.all().delete()
     return {'message': 'all jobs deleted successfully'}
@@ -67,7 +65,7 @@ def delete_all_jobs(request):
 def create_job(request, job: JobCreationSchema):
     try:
         qs = Job.objects.create(**job.dict())
-        print("created")
+        print("created_at")
         return status.HTTP_201_CREATED, qs
     except:
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
@@ -87,16 +85,5 @@ def update_job(request, job_in: JobUpdateOut, job_id: UUID4):
         job.save()
         return job
 
-    except:
-        return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
-
-
-@job_router.get('get_jobs_by_company/{company_id}', response={200: List[JobSchema], 400: FourOFour})
-@paginate
-def get_jobs_by_company(request, company_id: UUID4):
-    try:
-        jobs = Job.objects.filter(
-            company_id=company_id).order_by("-created").all()
-        return jobs
     except:
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
