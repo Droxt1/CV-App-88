@@ -290,7 +290,6 @@ class CustomerProfile(Entity):
     cv = models.FileField(upload_to='CV/', null=True,
                           blank=True, default='default.pdf')
     saved_job = models.ManyToManyField(Job, related_name='job', blank=True)
-
     def __str__(self):
         return self.name
 

@@ -12,6 +12,10 @@ class FourOFour(Schema):
 class two00_OK(Schema):
     message: str
 
+class savedOK(Schema):
+    message: str
+    saved: bool
+
 
 class CompanyJOBOut(Schema):
     id: UUID4
@@ -241,13 +245,14 @@ class CustomerProfileUpdateIn(Schema):
 class JobSchema(Schema):
     id: UUID4 = None
     company: Optional[CompanyJobOut]
-    created = datetime.now()
+    created_at = datetime.now()
     position: Optional[str]
     employment_type: str = None
     description: str = None
     location: str = None
     workplace: str = None
     is_featured: Optional[bool]
+
 
 
 class JobSchemaOut(Schema):

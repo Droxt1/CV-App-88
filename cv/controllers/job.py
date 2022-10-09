@@ -24,12 +24,12 @@ def get_all_jobs(request, is_featured: bool = None, position: str = None, compan
         if company_id:
             q &= Q(company_id=company_id)
 
-        return Job.objects.filter(q)
+        return Job.objects.filter(q).order_by('-created_at')
 
 
 
     except:
-        return {'error': 'something went wrong'}, status.HTTP_400_BAD_REQUEST
+        return {'error': 'something went wrong'}
 
 
 @job_router.get('/{job_id}', response={

@@ -39,8 +39,9 @@ api.add_router('auth/', customer_auth_router)
 api.add_router('auth/', sign_in_router)
 
 urlpatterns = [
-               path('admin/', admin.site.urls),
-               path("api/", api.urls),
+                  path('admin/', admin.site.urls),
+                  path("api/", api.urls),
 
-               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.MEDIA_URL,
-                                                                                          document_root=settings.MEDIA_ROOT)
+
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.MEDIA_URL,
+                                                                                         document_root=settings.MEDIA_ROOT)

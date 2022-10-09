@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from ninja import Router, File
 from ninja.files import UploadedFile
@@ -50,15 +52,27 @@ def update_customer(request, customer_id: UUID4, customer_in: CustomerProfileUpd
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
 
 
-@customer_router.delete('/{customer_id}/{job_id}', response={
+@customer_router.post('/save/', response={
+    200: savedOK,
     400: FourOFour,
     404: FourOFour,
 }, auth=CustomerAuth())
-def delete_saved_job(request, customer_id: UUID4, job_id: UUID4):
+def save_or_delete_job(request, customer_id: UUID4, job_id: UUID4, ):
     try:
-        job = Job.objects.get(id=job_id)
-        customer = CustomerProfile.objects.get(id=customer_id)
-        return customer.saved_job.remove(job)
+        saved = bool
+        customer = get_object_or_404(CustomerProfile, id=customer_id)
+        job = get_object_or_404(Job, id=job_id)
+        if job in customer.saved_job.all():
+            saved = False
+            customer.saved_job.remove(job)
+            return status.HTTP_200_OK, {'saved': saved
+                                        , 'message': 'job removed from saved jobs'}
+        else:
+            saved = True
+            customer.saved_job.add(job)
+            return status.HTTP_200_OK, {'saved': saved
+                                        , 'message': 'job added to saved jobs'}
+
     except CustomerProfile.DoesNotExist:
         return status.HTTP_404_NOT_FOUND, {'error': 'customer not found'}
     except Job.DoesNotExist:
@@ -66,37 +80,24 @@ def delete_saved_job(request, customer_id: UUID4, job_id: UUID4):
     except:
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
 
-# @customer_router.post('/{customer_id}/{job_id}', response={
-#     400: FourOFour,
-#     404: FourOFour,
-# }, auth=CustomerAuth())
-# def save_job(request, customer_id: UUID4, job_id: UUID4, ):
-#     try:
-#         job = Job.objects.get(id=job_id)
-#         customer = CustomerProfile.objects.get(id=customer_id)
-#         return customer.saved_job.add(job)
-#     except CustomerProfile.DoesNotExist:
-#         return status.HTTP_404_NOT_FOUND, {'error': 'customer not found'}
-#     except Job.DoesNotExist:
-#         return status.HTTP_404_NOT_FOUND, {'error': 'job not found'}
-#     except:
-#         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
 
-
-
-# @customer_router.post('/get_all_ saved_jobs/',
-#                       response={200: List[JobOut], 204: FourOFour, 404: FourOFour, 400: FourOFour}, auth=CustomerAuth())
-# @paginate
-# def get_all_saved_jobs(request, customer_id: UUID4):
-#     try:
-#         customer = CustomerProfile.objects.get(id=customer_id)
-#         return customer.saved_job.all()
-#     except CustomerProfile.saved_job.isnull():
-#         return status.HTTP_204_NO_CONTENT, {'error': 'Customer Has No Saved Jobs'}
-#     except CustomerProfile.DoesNotExist:
-#         return status.HTTP_404_NOT_FOUND, {'error': 'customer not found'}
-#     except:
-#         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
+@customer_router.get('/get_all_saved_jobs/',
+                     response={200: List[JobSchema], 204: FourOFour, 404: FourOFour, 400: FourOFour}, auth=CustomerAuth())
+@paginate
+def get_all_saved_jobs(request, customer_id: UUID4):
+    try:
+        customer = CustomerProfile.objects.get(id=customer_id)
+        return customer.saved_job.all().order_by('-created_at')
+    except CustomerProfile.saved_job.isnull():
+        return status.HTTP_204_NO_CONTENT, {'error': 'Customer Has No Saved Jobs'}
+    except CustomerProfile.DoesNotExist:
+        return status.HTTP_404_NOT_FOUND, {'error': 'customer not found'}
+    except ValidationError:
+        return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
+    except IntegrityError:
+        return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
+    except:
+        return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong, please try again'}
 
 
 @customer_router.post('/Aplly/', response={200: JobApplicationOut, 400: FourOFour, 404: FourOFour}, auth=CustomerAuth())
@@ -231,5 +232,3 @@ def upload_cv(request, payload: CustomerId, cv: UploadedFile = File(...)):
             return status.HTTP_400_BAD_REQUEST, {'error': 'File type not supported'}
     except:
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
-
-
