@@ -24,7 +24,6 @@ class CompanyAuthIn(Schema):
     name: str
     phone: str
     email: EmailStr
-    address: str = Field(..., example='Karada')
     country: str = Field(..., example='Iraq')
     password: str = Field(..., example='password', min_length=8, max_length=32)
 
