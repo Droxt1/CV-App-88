@@ -372,4 +372,5 @@ class EDID(Schema):
 class JobId(Schema):
     job_id: UUID4
 
-
+class CountryOut(Schema):
+    country: str
