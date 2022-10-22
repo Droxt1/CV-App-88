@@ -35,6 +35,7 @@ class CompanyOut(Schema):
     work_type: str = None
     city: str = None
     address: str = None
+    founded: date = None
     image: str = None
 
 
@@ -46,6 +47,7 @@ class CompanyProfileUpdate(Schema):
     work_type: str = None
     city: str = None
     address: str = None
+    founded: date = None
     image: str = None
 
 
@@ -221,6 +223,7 @@ class CompanyProfileUpdate(Schema):
     description: str = None
     work_type: str = None
     city: str = None
+    founded: date = None
     address: str = None
 
 
