@@ -279,6 +279,7 @@ class CustomerProfile(Entity):
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(
         Customer, on_delete=models.CASCADE, related_name='customer_profile')
+    email = models.EmailField(max_length=50, null=True, blank=True)
     phone = models.CharField(null=True, blank=True, max_length=20, unique=True)
     password = models.CharField(null=True, blank=True, max_length=32)
     name = models.CharField(max_length=50, null=True, blank=True)
@@ -302,11 +303,11 @@ class CustomerProfile(Entity):
 def create_user_profile(sender, instance, created, **kwargs):
     try:
         CustomerProfile.objects.get(
-            user=instance, phone=instance.phone, name=instance.name, id=instance.id)
+            user=instance, phone=instance.phone, email=instance.email, name=instance.name, id=instance.id)
     except CustomerProfile.DoesNotExist:
         if created and instance.role == "CUSTOMER":
             CustomerProfile.objects.create(
-                user=instance, phone=instance.phone, name=instance.name, id=instance.id)
+                user=instance, phone=instance.phone, email=instance.email, name=instance.name, id=instance.id)
         else:
             if instance.role == "CUSTOMER":
                 instance.customer_profile.save()
