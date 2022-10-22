@@ -51,6 +51,8 @@ class CompanyProfileUpdate(Schema):
 
 class CompanyJobOut(Schema):
     id: UUID4 = None
+    work_type: str = None
+    founded: date = None
     name: str = None
     image: str = None
 
@@ -251,6 +253,7 @@ class JobSchema(Schema):
     description: str = None
     location: str = None
     workplace: str = None
+    expire_date: date = None
     is_featured: Optional[bool]
 
 
