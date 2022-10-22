@@ -15,7 +15,7 @@ class UserAdmin1(admin.ModelAdmin):
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-   list_display = ('id', 'name', 'email','phone', 'password', 'address', 'country'  )
+   list_display = ('id', 'name', 'email','phone', 'password', 'country'  )
    list_display_links = ('id', 'name', 'email', 'password', )
    search_fields = ('id', 'name', 'email', 'password', )
    list_filter = ('id', 'name', 'email', 'password', )
