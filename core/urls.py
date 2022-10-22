@@ -26,6 +26,7 @@ from cv.controllers.meta import meta_router
 from django.conf import settings
 from django.conf.urls.static import static
 from cv.Auth.API.GlobalSignIn import sign_in_router
+from django_otp.admin import OTPAdminSite
 
 api = NinjaAPI(version='1.0', title='CV API', description='CV API  Alpha')
 
@@ -37,11 +38,36 @@ api.add_router('meta/', meta_router)
 api.add_router('auth/', company_auth_router)
 api.add_router('auth/', customer_auth_router)
 api.add_router('auth/', sign_in_router)
-
+admin.site.__class__ = OTPAdminSite
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path("api/", api.urls),
 
-
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.MEDIA_URL,
+
                                                                                          document_root=settings.MEDIA_ROOT)
+#write jr backend developer summary
+"""
+A results oriented Junior Backend Developer with over 2 years of experience  
+in developing and maintaining web applications.
+I have a strong understanding of the software development life cycle and
+I am able to work independently or as part of a team.
+I am a quick learner and I am always eager to learn new technologies.
+I am a self-motivated individual who is able to work under pressure and
+meet deadlines.
+1-worked as a freelancer for 2 years
+Awesome communication skills: building 
+Computer Skills: Linux(Ubuntu), C++, Java, Python, Django, Dart, Flutter, RESTful API’s,
+MYsql, LeetCode, Git&GitHub, branching strategies, Bash Terminal, Kubernetes, CSS, HTML 5, 
+JavaScript, React, Redux, Node.js, Express.js, MongoDB, Mongoose, Heroku, Netlify,
+Firebase, Postman, Agile, Scrum, Kanban, Trello, Jira, Slack, Zoom, Google Meet,
+Google Docs, Google Sheets, Google Slides, Google Drive, Google Calendar, Google Forms,
+Google Classroom, Google Hangouts, Google Meet, Google Chat, Google Translate, Google
+Keep, Google Photos, Google Maps, Google Search, Google Analytics, Google Ads, Google
+AdSense, Google AdWords, Google Tag Manager, Google Data Studio, Google Trends, Google
+
+
+
+"""
+
+

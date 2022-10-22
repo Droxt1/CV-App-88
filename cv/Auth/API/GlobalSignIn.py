@@ -1,6 +1,3 @@
-
-
-
 from django.db import IntegrityError
 from ninja import Router
 from ninja.errors import ValidationError

@@ -3,7 +3,9 @@ from django.contrib import admin
 
 from .models import User, CompanyProfile,Customer , CustomerProfile, WorkExperience, Education, Job, JobApplication , Company
 
-
+admin.site.site_header = 'CV App'
+admin.site.site_title = 'CV App'
+admin.site.index_title = 'CV App'
 @admin.register(User)
 class UserAdmin1(admin.ModelAdmin):
    list_display = ('id', 'name', 'email', 'password', )
