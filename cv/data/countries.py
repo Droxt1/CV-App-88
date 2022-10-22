@@ -1,5 +1,5 @@
 Country = (
-    ('iraq,''iraq'),
+    ('iraq','iraq'),
     ('uae','uae'),
     ('usa','usa'),
     ('uk','uk'),
