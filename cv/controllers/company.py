@@ -38,6 +38,7 @@ def update_company(request, company_id: UUID4, company_in: CompanyProfileUpdate,
     company.phone = company_in.phone
     company.description = company_in.description
     company.address = company_in.address
+    company.founded = company_in.founded
     company.save()
     return company
 
@@ -61,4 +62,4 @@ def upload_logo(request, company_id: UUID4, image: UploadedFile = File(...)):
     except:
         return status.HTTP_400_BAD_REQUEST, {'error': 'something went wrong'}
 
-# search company query
+

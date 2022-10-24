@@ -182,11 +182,8 @@ class Company(User):
                              null=True, default='Phone')
     status = models.CharField(max_length=50, choices=CompanyStatus.choices, default=CompanyStatus.PENDING)
 
-    address = models.CharField(
-        max_length=50, blank=True, null=True, default='Address')
     country = models.CharField(
         max_length=50, null=True, blank=True, default='Iraq')
-
 
     base_role = User.Role.COMPANY
     Company = CompanyManger()
@@ -228,13 +225,16 @@ class CompanyProfile(Entity):
         max_length=32, blank=True, null=True)
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    website = models.CharField(max_length=255, null=True, blank=True)
+    head_office = models.CharField(max_length=255, null=True, blank=True)
+    founded = models.DateField(null=True, blank=True)
     work_type = models.CharField(choices=Industry, max_length=100)
     country = models.CharField(
         max_length=50, null=True, blank=True, default='Iraq')
-    city = models.CharField(choices=JobLocation, max_length=20)
+    city = models.CharField(max_length=100, null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='company/', null=True,
-                              blank=True, default='company/default.png')
+                              blank=True, )
 
     def __str__(self):
         return self.name
@@ -244,13 +244,13 @@ class CompanyProfile(Entity):
 def create_user_profile(sender, instance, created, **kwargs):
     try:
         CompanyProfile.objects.get(user=instance, name=instance.name, email=instance.email, country=instance.country,
-                                   phone=instance.phone, password=instance.password, address=instance.address,
+                                   phone=instance.phone, password=instance.password,
                                    id=instance.id, )
     except CompanyProfile.DoesNotExist:
         if created and instance.role == "COMPANY":
             CompanyProfile.objects.create(user=instance, name=instance.name, email=instance.email,
                                           country=instance.country, phone=instance.phone, password=instance.password,
-                                          address=instance.address, id=instance.id, )
+                                          id=instance.id, )
         else:
             instance.company_profile.save()
 
@@ -267,6 +267,7 @@ class Job(Profile):
     employment_type = models.CharField(
         choices=EmploymentType.choices, max_length=30, blank=True, null=True)
     description = models.TextField(null=True, blank=True)
+    expire_date = models.DateField(null=True, blank=True, auto_now_add=False)
     is_featured = models.BooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
@@ -278,6 +279,7 @@ class CustomerProfile(Entity):
         primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.OneToOneField(
         Customer, on_delete=models.CASCADE, related_name='customer_profile')
+    email = models.EmailField(max_length=50, null=True, blank=True)
     phone = models.CharField(null=True, blank=True, max_length=20, unique=True)
     password = models.CharField(null=True, blank=True, max_length=32)
     name = models.CharField(max_length=50, null=True, blank=True)
@@ -288,10 +290,11 @@ class CustomerProfile(Entity):
         choices=Language, max_choices=10, max_length=255)
     job_title = models.CharField(choices=JobTitle, max_length=100)
     image = models.ImageField(upload_to='customer/',
-                              null=True, blank=True, default='default.jpg')
+                              null=True, blank=True, )
     cv = models.FileField(upload_to='CV/', null=True,
-                          blank=True, default='default.pdf')
+                          blank=True, )
     saved_job = models.ManyToManyField(Job, related_name='job', blank=True)
+
     def __str__(self):
         return self.name
 
@@ -300,11 +303,11 @@ class CustomerProfile(Entity):
 def create_user_profile(sender, instance, created, **kwargs):
     try:
         CustomerProfile.objects.get(
-            user=instance, phone=instance.phone, name=instance.name, id=instance.id)
+            user=instance, phone=instance.phone, email=instance.email, name=instance.name, id=instance.id)
     except CustomerProfile.DoesNotExist:
         if created and instance.role == "CUSTOMER":
             CustomerProfile.objects.create(
-                user=instance, phone=instance.phone, name=instance.name, id=instance.id)
+                user=instance, phone=instance.phone, email=instance.email, name=instance.name, id=instance.id)
         else:
             if instance.role == "CUSTOMER":
                 instance.customer_profile.save()
