@@ -60,11 +60,7 @@ def create_company_token(Company):
 
 
 def create_customer_token(Customer):
-    # token = jwt.encode({'email': str(Customer.email)}, key=settings.SECRET_KEY, algorithm='HS256')
-    # return {
-    #    'access': str(token),
-    # }
-    # token contains email and name and phone
+    
     token = jwt.encode({'email': str(Customer.email), 'name': str(Customer.name), 'phone': str(Customer.phone)},
                        key=settings.SECRET_KEY, algorithm='HS256')
     return {
