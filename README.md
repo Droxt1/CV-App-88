@@ -4,9 +4,6 @@
 
 *   Django
 *   Django Ninja
-*   APIs
-*   Authorization
-*   Authentication
 *   Django Rest Framework  
      
 
