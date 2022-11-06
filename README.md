@@ -69,7 +69,7 @@
 <!-- Features -->
 ### Features
 
-- OTP Authentication on admin panle
+- OTP Authentication on admin panel
 - Authentication and Authorization using username, phone and email
 - Jazzmin Dashboard 
 - Handling different user types (ADMIN,CUSTOMER,COMPANY)
