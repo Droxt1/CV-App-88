@@ -4,6 +4,7 @@ from cv.data.industry import Industry
 from cv.data.job_titles import JobTitle
 from cv.data.langs import Language
 from cv.data.skills import Skills
+from cv.data.countries import Country
 from cv.schema import *
 
 meta_router = Router(tags=['meta'])
@@ -57,6 +58,16 @@ def Language_Out(request):
     for i in Language:
         result.append({
             'language': i[1]
+
+        })
+    return result
+
+@meta_router.get('/get_all_countries', response=List[CountryOut])
+def Country_Out(request):
+    result = []
+    for i in Country:
+        result.append({
+            'country': i[1]
 
         })
     return result

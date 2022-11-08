@@ -35,6 +35,7 @@ class CompanyOut(Schema):
     work_type: str = None
     city: str = None
     address: str = None
+    founded: date = None
     image: str = None
 
 
@@ -46,11 +47,14 @@ class CompanyProfileUpdate(Schema):
     work_type: str = None
     city: str = None
     address: str = None
+    founded: date = None
     image: str = None
 
 
 class CompanyJobOut(Schema):
     id: UUID4 = None
+    work_type: str = None
+    founded: date = None
     name: str = None
     image: str = None
 
@@ -219,6 +223,7 @@ class CompanyProfileUpdate(Schema):
     description: str = None
     work_type: str = None
     city: str = None
+    founded: date = None
     address: str = None
 
 
@@ -251,6 +256,7 @@ class JobSchema(Schema):
     description: str = None
     location: str = None
     workplace: str = None
+    expire_date: date = None
     is_featured: Optional[bool]
 
 
@@ -366,4 +372,5 @@ class EDID(Schema):
 class JobId(Schema):
     job_id: UUID4
 
-
+class CountryOut(Schema):
+    country: str
