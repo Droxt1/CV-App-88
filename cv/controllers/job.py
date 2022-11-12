@@ -15,7 +15,6 @@ job_router = RouterPaginated(tags=['Jobs'])
 def get_all_jobs(request, is_featured: bool = None, position: str = None, company_id: UUID4 = None, ):
     try:
 
-        # multi filtering with Q
         q = Q()
         if is_featured is not None:
             q &= Q(is_featured=is_featured)
