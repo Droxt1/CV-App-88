@@ -56,6 +56,8 @@
     <li><a href="https://www.mysql.com/">MySQL</a></li>
     <li><a href="https://www.postgresql.org/">PostgreSQL</a></li>
     <li><a href="https://redis.io/">Redis</a></li>
+    <li><a href="https://lucid.app/lucidchart/7cb05883-bcbb-42cc-a6cf-8ba626231c4c/edit?page=0_0&invitationId=inv_c4afe04f-96ec-47f5-9d2c-dfb49d780070#">UML</a></li>
+    
   </ul>
 </details>
 
