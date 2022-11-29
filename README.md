@@ -28,6 +28,7 @@
 - [License](#license)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
+- [Frontend](#frontend)
   
 
 <!-- About the Project -->
@@ -168,4 +169,8 @@ Ahmed Amer - [LinkedIn](https://www.linkedin.com/in/ahmed-amer-43973a20a/) - ahm
 
  - [Haki Bentia](https://hakibenita.com/tag/django)
 
+<!-- Frontend -->
+## Frontend
+
+-  [Flutter App](https://github.com/devsadeq/JobsFlutterApp)
 
