@@ -168,6 +168,7 @@ Ahmed Amer - [LinkedIn](https://www.linkedin.com/in/ahmed-amer-43973a20a/) - ahm
 ## Acknowledgements
 
  - [Haki Bentia](https://hakibenita.com/tag/django)
+ - [Very Academy](https://youtube.com/@veryacademy)
 
 <!-- Frontend -->
 ## Frontend
