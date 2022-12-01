@@ -1,5 +1,5 @@
 
-<div align="center"
+<div align="center">
 
 
   <h1>THE CV APP</h1>
