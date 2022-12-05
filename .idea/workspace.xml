@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="badcf03f-a14b-4229-83c9-d10d9f57e076" name="Changes" comment="Django Adminator installed" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="features/two_factor_auth" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/DjangoAdminator/django-adminator" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
+  </component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="main" />
+        <option value="develop" />
+      </list>
+    </option>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Programs/Python/Python310/Lib/typing.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2FNcJ9mVHnI428oRJyTl7HVGm6u" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Git.Branch.Popup.ShowAllRemotes": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/pyfolder/cv/n/CV-App-88",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\pyfolder\cv\n\CV-App-88\cv\Auth" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="CV-App-88" type="Python.DjangoServer" factoryName="Django server">
+      <module name="CV-App-88" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="badcf03f-a14b-4229-83c9-d10d9f57e076" name="Changes" comment="" />
+      <created>1664335910671</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1664335910671</updated>
+      <workItem from="1664335915478" duration="946000" />
+      <workItem from="1664336885224" duration="13457000" />
+      <workItem from="1664399595232" duration="13255000" />
+      <workItem from="1664490332731" duration="14935000" />
+      <workItem from="1664570715081" duration="10078000" />
+      <workItem from="1664720925068" duration="3803000" />
+      <workItem from="1664763839689" duration="14592000" />
+      <workItem from="1664875051928" duration="2906000" />
+      <workItem from="1664881108217" duration="20535000" />
+      <workItem from="1665051342936" duration="8689000" />
+      <workItem from="1665134425888" duration="2362000" />
+      <workItem from="1665138054270" duration="6500000" />
+      <workItem from="1665152711914" duration="28000" />
+      <workItem from="1665152757685" duration="5132000" />
+      <workItem from="1665231246495" duration="106000" />
+      <workItem from="1665231379294" duration="3361000" />
+      <workItem from="1665234964659" duration="1614000" />
+      <workItem from="1665237194073" duration="344000" />
+      <workItem from="1665237551398" duration="1599000" />
+      <workItem from="1665239207204" duration="5616000" />
+      <workItem from="1665302593832" duration="704000" />
+      <workItem from="1665303350942" duration="9491000" />
+      <workItem from="1665319389684" duration="176000" />
+      <workItem from="1665319574413" duration="1022000" />
+      <workItem from="1665481020472" duration="53000" />
+      <workItem from="1665481084828" duration="1249000" />
+      <workItem from="1665482429000" duration="1492000" />
+      <workItem from="1665589248746" duration="2771000" />
+      <workItem from="1665601637550" duration="599000" />
+      <workItem from="1666027258059" duration="612000" />
+      <workItem from="1666310714043" duration="2058000" />
+      <workItem from="1666447725173" duration="3274000" />
+      <workItem from="1666452146124" duration="4178000" />
+      <workItem from="1666481580865" duration="1671000" />
+      <workItem from="1666571097944" duration="10000" />
+      <workItem from="1666645514553" duration="1189000" />
+      <workItem from="1666826301310" duration="1415000" />
+      <workItem from="1666998691348" duration="2111000" />
+      <workItem from="1667411841000" duration="1194000" />
+      <workItem from="1667471442614" duration="428000" />
+      <workItem from="1667665192996" duration="1069000" />
+      <workItem from="1668083844834" duration="3218000" />
+      <workItem from="1668159825506" duration="3398000" />
+      <workItem from="1668246387015" duration="130000" />
+      <workItem from="1668246535381" duration="758000" />
+      <workItem from="1670253916964" duration="1719000" />
+    </task>
+    <task id="LOCAL-00001" summary="Setting Authentication and Authorization with changes in the endpoints">
+      <created>1664542280506</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1664542280507</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Setting Authentication and Authorization with changes in the endpoints">
+      <created>1664542289915</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1664542289915</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Setting Authentication and Authorization with changes in the endpoints">
+      <created>1664570474993</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1664570474993</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Setting Authentication and Authorization with changes in the endpoints">
+      <created>1664571657729</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1664571657729</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Database entry and global login for both customer and company">
+      <created>1664587975632</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1664587975632</updated>
+    </task>
+    <task id="LOCAL-00006" summary="setting auth in the controllers">
+      <created>1664588597873</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1664588597873</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Login with email or phone">
+      <created>1664799552503</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1664799552503</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Using The Q Object in the multi filtering">
+      <created>1664962525598</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1664962525598</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Using The Q Object in the multi filtering">
+      <created>1665056810628</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1665056810628</updated>
+    </task>
+    <task id="LOCAL-00010" summary="adding status field to both users and check if it's pending or not in the login page + fixing the id issue">
+      <created>1665152894742</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1665152894742</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixing issues with the saving jobs endpoints and setting a new database">
+      <created>1665307441086</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1665307441086</updated>
+    </task>
+    <task id="LOCAL-00012" summary="fixing issues with the saving jobs endpoints and setting a new database">
+      <created>1665308711714</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1665308711714</updated>
+    </task>
+    <task id="LOCAL-00013" summary="deleting packages">
+      <created>1665311399630</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1665311399630</updated>
+    </task>
+    <task id="LOCAL-00014" summary="deleting packages">
+      <created>1665311565626</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1665311565626</updated>
+    </task>
+    <task id="LOCAL-00015" summary="deleting packages">
+      <created>1665311694267</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1665311694267</updated>
+    </task>
+    <task id="LOCAL-00016" summary="deleting packages">
+      <created>1665311833175</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1665311833175</updated>
+    </task>
+    <task id="LOCAL-00017" summary="allowed hosts">
+      <created>1665312074512</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1665312074512</updated>
+    </task>
+    <task id="LOCAL-00018" summary="separating the status field in the Base user model and changing the response message">
+      <created>1665318421140</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1665318421140</updated>
+    </task>
+    <task id="LOCAL-00019" summary="admin auth code with jazzmen">
+      <created>1666447771153</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1666447771153</updated>
+    </task>
+    <task id="LOCAL-00020" summary="admin auth code with jazzmen">
+      <created>1666447779364</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1666447779364</updated>
+    </task>
+    <task id="LOCAL-00021" summary="deleting defaults,cities as a charfield , deleting address from company profile">
+      <created>1666451111274</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1666451111274</updated>
+    </task>
+    <task id="LOCAL-00022" summary="deleting the address from company payload schema">
+      <created>1666451264714</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1666451264714</updated>
+    </task>
+    <task id="LOCAL-00023" summary="deleting address from admin">
+      <created>1666451352567</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1666451352567</updated>
+    </task>
+    <task id="LOCAL-00024" summary="adding founded to schemas">
+      <created>1666451959019</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1666451959019</updated>
+    </task>
+    <task id="LOCAL-00025" summary="adding founded to  companyprofile admin,deleting the database">
+      <created>1666452217397</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1666452217397</updated>
+    </task>
+    <task id="LOCAL-00026" summary="adding country demo data and country endpoint">
+      <created>1666452664309</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1666452664309</updated>
+    </task>
+    <task id="LOCAL-00027" summary="adding country demo data and country endpoint">
+      <created>1666452818729</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1666452818729</updated>
+    </task>
+    <task id="LOCAL-00028" summary="email field as instance in customer signal">
+      <created>1666481638093</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1666481638093</updated>
+    </task>
+    <task id="LOCAL-00029" summary="adding 2-factor auth">
+      <created>1667000011497</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1667000011497</updated>
+    </task>
+    <task id="LOCAL-00030" summary="deleting the local host">
+      <created>1668246420814</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1668246420814</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Allowed host updated">
+      <created>1670254005835</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1670254005835</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Django Adminator installed">
+      <created>1670254326351</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1670254326351</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Django Adminator installed">
+      <created>1670255308784</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1670255308784</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="3ce28cfe-3832-4313-9b64-5f718a0ebc94">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="65d3db5e-f72b-4181-82d8-90da81f72f40">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="87fa347c-0e2a-493f-81a2-5174600a87bb">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="TEXT_FILTER_SETTINGS">
+                <TextFilterSettings>
+                  <option name="REGEX" value="true" />
+                  <option name="MATCH_CASE" value="true" />
+                </TextFilterSettings>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="c36538c9-449e-4980-9ee5-dbd9641986f7">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="3ce28cfe-3832-4313-9b64-5f718a0ebc94" value="TOOL_WINDOW" />
+        <entry key="65d3db5e-f72b-4181-82d8-90da81f72f40" value="TOOL_WINDOW" />
+        <entry key="87fa347c-0e2a-493f-81a2-5174600a87bb" value="TOOL_WINDOW" />
+        <entry key="c36538c9-449e-4980-9ee5-dbd9641986f7" value="TOOL_WINDOW" />
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Setting Authentication and Authorization with changes in the endpoints" />
+    <MESSAGE value="Database entry and global login for both customer and company" />
+    <MESSAGE value="setting auth in the controllers" />
+    <MESSAGE value="Login with email or phone" />
+    <MESSAGE value="Using The Q Object in the multi filtering" />
+    <MESSAGE value="adding status field to both users and check if it's pending or not in the login page + fixing the id issue" />
+    <MESSAGE value="fixing issues with the saving jobs endpoints and setting a new database" />
+    <MESSAGE value="deleting packages" />
+    <MESSAGE value="allowed hosts" />
+    <MESSAGE value="separating the status field in the Base user model and changing the response message" />
+    <MESSAGE value="admin auth code with jazzmen" />
+    <MESSAGE value="deleting defaults,cities as a charfield , deleting address from company profile" />
+    <MESSAGE value="deleting the address from company payload schema" />
+    <MESSAGE value="deleting address from admin" />
+    <MESSAGE value="adding founded to schemas" />
+    <MESSAGE value="adding founded to  companyprofile admin,deleting the database" />
+    <MESSAGE value="adding country demo data and country endpoint" />
+    <MESSAGE value="email field as instance in customer signal" />
+    <MESSAGE value="adding 2-factor auth" />
+    <MESSAGE value="deleting the local host" />
+    <MESSAGE value="Allowed host updated" />
+    <MESSAGE value="Django Adminator installed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Django Adminator installed" />
+  </component>
+</project>
