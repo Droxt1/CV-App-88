@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="badcf03f-a14b-4229-83c9-d10d9f57e076" name="Changes" comment="deleting the local host" />
+    <list default="true" id="badcf03f-a14b-4229-83c9-d10d9f57e076" name="Changes" comment="Allowed host updated">
+      <change afterPath="$PROJECT_DIR$/DjangoAdminator/django-adminator" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,27 +45,28 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2FNcJ9mVHnI428oRJyTl7HVGm6u" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Git.Branch.Popup.ShowAllRemotes&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Git.Branch.Popup.ShowAllRemotes": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "D:/pyfolder/cv/n/CV-App-88",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\pyfolder\cv\n\CV-App-88\cv\Auth" />
@@ -147,6 +150,7 @@
       <workItem from="1668159825506" duration="3398000" />
       <workItem from="1668246387015" duration="130000" />
       <workItem from="1668246535381" duration="758000" />
+      <workItem from="1670253916964" duration="344000" />
     </task>
     <task id="LOCAL-00001" summary="Setting Authentication and Authorization with changes in the endpoints">
       <created>1664542280506</created>
@@ -358,7 +362,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668246420814</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Allowed host updated">
+      <created>1670254005835</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1670254005835</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -432,6 +443,7 @@
     <MESSAGE value="email field as instance in customer signal" />
     <MESSAGE value="adding 2-factor auth" />
     <MESSAGE value="deleting the local host" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleting the local host" />
+    <MESSAGE value="Allowed host updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Allowed host updated" />
   </component>
 </project>
